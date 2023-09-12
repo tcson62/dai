@@ -1,0 +1,362 @@
+TIPC Linda server listening at: port_id('<0.0.0:924178820>')
+Number of steps 7
+ Domain "domain.lp"
+ Problem "prob1_tru2.lp"
+Done starting 
+In preparation 
+*********** 
+ Computing initial state 
+ **************
+ Executing: clingo ../../lps/compute_0.lp  "domain.lp" "prob1_tru2.lp" --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_next_0.lp' 
+!*********** 
+ Computing the fluents 
+ **************
+ Step 1
+Sent occurs(constant("tru2"),("load-truck",constant("obj23"),constant("tru2"),constant("pos2")),1)
+ and wait for response in step 1 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 1 
+In agent 3 solving step 1 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_1.lp'  '3_enext_0.lp' ' -c t=1'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_1.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_0.lp'  '3_next_1.lp' '3_occ_1.lp'  '3_enext_1.lp' ' -c t=2' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_1.lp' 
+!File '3_my_error_1.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 1!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 1
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 1 ======================= 
+Will run step 2 when From and Type and Content are 0 2 next 
+Step 2
+Sent occurs(constant("tru2"),("load-truck",constant("obj21"),constant("tru2"),constant("pos2")),2)
+ and wait for response in step 2 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 2 
+In agent 3 solving step 2 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_2.lp'  '3_enext_1.lp' ' -c t=2'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_2.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_1.lp'  '3_next_2.lp' '3_occ_2.lp'  '3_enext_2.lp' ' -c t=3' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_2.lp' 
+!File '3_my_error_2.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 2!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 2
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 2 ======================= 
+Will run step 3 when From and Type and Content are 0 2 next 
+Step 3
+Sent occurs(constant("tru2"),("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),3)
+ and wait for response in step 3 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 3 
+In agent 3 solving step 3 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_3.lp'  '3_enext_2.lp' ' -c t=3'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_3.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_2.lp'  '3_next_3.lp' '3_occ_3.lp'  '3_enext_3.lp' ' -c t=4' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_3.lp' 
+!File '3_my_error_3.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 3!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 3
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 3 ======================= 
+Will run step 4 when From and Type and Content are 0 2 next 
+Step 4
+Sent occurs(constant("tru2"),("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),4)
+ and wait for response in step 4 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 4 
+In agent 3 solving step 4 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_4.lp'  '3_enext_3.lp' ' -c t=4'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_4.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_3.lp'  '3_next_4.lp' '3_occ_4.lp'  '3_enext_4.lp' ' -c t=5' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_4.lp' 
+!File '3_my_error_4.lp'
+Number of errors [question(other,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,4),question(other,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("in",constant("obj23"),constant("tru2"))),false,4)] 2
+I need some diagnoses at 4 Step!
+I need some diagnoses at Step 4!
+This needs to be resolved [question(other,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,4),question(other,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("in",constant("obj23"),constant("tru2"))),false,4)] at Step 4!
+I need to look for answer for this "unload-truck",constant("obj23"),constant("tru2"),constant("apt2") variable(("at",constant("tru2"),constant("apt2"))) false 4 
+I found an answer for this "unload-truck",constant("obj23"),constant("tru2"),constant("apt2") variable(("at",constant("tru2"),constant("apt2"))) false 4 
+I need to look for answer for this "unload-truck",constant("obj23"),constant("tru2"),constant("apt2") variable(("in",constant("obj23"),constant("tru2"))) false 4 
+I did not find answer for this "unload-truck",constant("obj23"),constant("tru2"),constant("apt2") variable(("in",constant("obj23"),constant("tru2"))) false 4 
+Need to ask for help from neighbor  
+I send a message to 1 for question(variable(("in",constant("obj23"),constant("tru2"))), false, 4) !
+Waiting for the next round to start ...
+Still needs to resolve [asked(1,variable(("in",constant("obj23"),constant("tru2"))),false,4)]
+Received: from 0 type 10 content 4
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 4 ======================= 
+Will run step 5 when From and Type and Content are 0 2 next 
+Step 5
+Sent occurs(constant("tru2"),("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),5)
+ and wait for response in step 5 
+Received - main loop: from 1 type 6 content answer(variable(("in",constant("obj23"),constant("tru2"))),false,4,[no])
+Processing: from 1 type 6 content answer(variable(("in",constant("obj23"),constant("tru2"))),false,4,[no])
+Receiving answer(variable(("in",constant("obj23"),constant("tru2"))), false, 4) from [no]! 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 5 
+In agent 3 solving step 5 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_5.lp'  '3_enext_4.lp' ' -c t=5'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_5.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_4.lp'  '3_next_5.lp' '3_occ_5.lp'  '3_enext_5.lp' ' -c t=6' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_5.lp' 
+!File '3_my_error_5.lp'
+Number of errors [question(other,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,5),question(other,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("in",constant("obj21"),constant("tru2"))),false,5)] 2
+I need some diagnoses at 5 Step!
+I need some diagnoses at Step 5!
+This needs to be resolved [question(self,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("obj23"),constant("apt2"))),false,5),question(other,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,5),question(other,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("in",constant("obj21"),constant("tru2"))),false,5)] at Step 5!
+Add some information for myself "unload-truck",constant("obj23"),constant("tru2"),constant("apt2") variable(("at",constant("obj23"),constant("apt2"))) false 5 
+I need to look for answer for this "unload-truck",constant("obj21"),constant("tru2"),constant("apt2") variable(("at",constant("tru2"),constant("apt2"))) false 5 
+I found an answer for this "unload-truck",constant("obj21"),constant("tru2"),constant("apt2") variable(("at",constant("tru2"),constant("apt2"))) false 5 
+I need to look for answer for this "unload-truck",constant("obj21"),constant("tru2"),constant("apt2") variable(("in",constant("obj21"),constant("tru2"))) false 5 
+I found an answer for this "unload-truck",constant("obj21"),constant("tru2"),constant("apt2") variable(("in",constant("obj21"),constant("tru2"))) false 5 
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 1 type 7 content question(variable(("at",constant("obj23"),constant("apt2"))),false,5)
+Receiving question(variable(("at",constant("obj23"),constant("apt2"))), 5, false) from 1! 
+Did not find answer question(variable(("at",constant("obj23"),constant("apt2"))), 5, false) from 1! 
+Still needs to resolve xxxx []
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 5 ======================= 
+Will run step 6 when From and Type and Content are 0 2 next 
+Step 6
+Sent occurs(constant("tru2"),("drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2")),6)
+ and wait for response in step 6 
+Received - main loop: from 0 type 10 content 5
+Processing: from 0 type 10 content 5
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 6 
+In agent 3 solving step 6 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_6.lp'  '3_enext_5.lp' ' -c t=6'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_6.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_5.lp'  '3_next_6.lp' '3_occ_6.lp'  '3_enext_6.lp' ' -c t=7' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_6.lp' 
+!File '3_my_error_6.lp'
+Number of errors [question(other,("drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,6)] 1
+I need some diagnoses at 6 Step!
+I need some diagnoses at Step 6!
+This needs to be resolved [question(self,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("obj21"),constant("apt2"))),false,6),question(other,("drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,6)] at Step 6!
+Add some information for myself "unload-truck",constant("obj21"),constant("tru2"),constant("apt2") variable(("at",constant("obj21"),constant("apt2"))) false 6 
+I need to look for answer for this "drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2") variable(("at",constant("tru2"),constant("apt2"))) false 6 
+I found an answer for this "drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2") variable(("at",constant("tru2"),constant("apt2"))) false 6 
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 1 type 7 content question(variable(("at",constant("obj21"),constant("apt2"))),false,6)
+Receiving question(variable(("at",constant("obj21"),constant("apt2"))), 6, false) from 1! 
+Did not find answer question(variable(("at",constant("obj21"),constant("apt2"))), 6, false) from 1! 
+Still needs to resolve xxxx []
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 6 ======================= 
+Will run step 7 when From and Type and Content are 0 2 next 
+Step 7
+Sent none
+ and wait for response in step 7 
+Received - main loop: from 0 type 10 content 6
+Processing: from 0 type 10 content 6
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 7 
+In agent 3 solving step 7 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_7.lp'  '3_enext_6.lp' ' -c t=7'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_7.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_6.lp'  '3_next_7.lp' '3_occ_7.lp'  '3_enext_7.lp' ' -c t=8' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_7.lp' 
+!File '3_my_error_7.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 7!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 7
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 7 ======================= 
+Will run step 8 when From and Type and Content are 0 2 next 
+Step 8
+Sent none
+ and wait for response in step 8 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 8 
+In agent 3 solving step 8 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_8.lp'  '3_enext_7.lp' ' -c t=8'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_8.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_7.lp'  '3_next_8.lp' '3_occ_8.lp'  '3_enext_8.lp' ' -c t=9' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_8.lp' 
+!File '3_my_error_8.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 8!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 8
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 8 ======================= 
+Will run step 9 when From and Type and Content are 0 2 next 
+Step 9
+Sent none
+ and wait for response in step 9 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 9 
+In agent 3 solving step 9 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_9.lp'  '3_enext_8.lp' ' -c t=9'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_9.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_8.lp'  '3_next_9.lp' '3_occ_9.lp'  '3_enext_9.lp' ' -c t=10' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_9.lp' 
+!File '3_my_error_9.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 9!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 9
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 9 ======================= 
+Will run step 10 when From and Type and Content are 0 2 next 
+Step 10
+Sent none
+ and wait for response in step 10 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 10 
+In agent 3 solving step 10 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_10.lp'  '3_enext_9.lp' ' -c t=10'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_10.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_9.lp'  '3_next_10.lp' '3_occ_10.lp'  '3_enext_10.lp' ' -c t=11' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_10.lp' 
+!File '3_my_error_10.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 10!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 10
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 10 ======================= 
+Will run step 11 when From and Type and Content are 0 2 next 
+Step 11
+Sent none
+ and wait for response in step 11 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 11 
+In agent 3 solving step 11 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_11.lp'  '3_enext_10.lp' ' -c t=11'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_11.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_10.lp'  '3_next_11.lp' '3_occ_11.lp'  '3_enext_11.lp' ' -c t=12' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_11.lp' 
+!File '3_my_error_11.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 11!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 11
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 11 ======================= 
+Will run step 12 when From and Type and Content are 0 2 next 
+Step 12
+Sent occurs(constant("tru2"),("load-truck",constant("obj22"),constant("tru2"),constant("pos2")),12)
+ and wait for response in step 12 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 12 
+In agent 3 solving step 12 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_12.lp'  '3_enext_11.lp' ' -c t=12'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_12.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_11.lp'  '3_next_12.lp' '3_occ_12.lp'  '3_enext_12.lp' ' -c t=13' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_12.lp' 
+!File '3_my_error_12.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 12!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 12
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 12 ======================= 
+Will run step 13 when From and Type and Content are 0 2 next 
+Step 13
+Sent none
+ and wait for response in step 13 
+Received - main loop: from 0 type 2 content next
+Processing: from 0 type 2 content next
+Agent computing next step and diagnosis 13 
+In agent 3 solving step 13 ...
+ Executing: clingo ../../lps/compute_expected_agent.lp  
+                  "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_occ_13.lp'  '3_enext_12.lp' ' -c t=13'  --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_enext_13.lp' 
+!Executing: clingo ../../lps/diagnosis.lp  
+  	          "domain.lp" "prob1_tru2.lp" '3_agent.lp' '3_next_12.lp'  '3_next_13.lp' '3_occ_13.lp'  '3_enext_13.lp' ' -c t=14' --outf=0 -V0 --out-atomf=%s. | head -n1  > '3_my_error_13.lp' 
+!File '3_my_error_13.lp'
+Number of errors [] 0
+I do not need diagnoses at Step 13!
+Waiting for the next round to start ...
+Still needs to resolve []
+Received: from 0 type 10 content 13
+Receiving permission to send action occurrence for the next round ...
+Done computing at step 13 ======================= 
+Will run step 14 when From and Type and Content are 0 2 next 
+Step 14
+Sent none
+ and wait for response in step 14 
+Received - main loop: from 0 type 2 content done
+Processing: from 0 type 2 content done
+All done 
+Out from agent step 14 
+Out from agent step 13 
+Out from agent step 12 
+Out from agent step 11 
+Out from agent step 10 
+Out from agent step 9 
+Out from agent step 8 
+Out from agent step 7 
+Out from agent step 6 
+Out from agent step 5 
+Out from agent step 4 
+Out from agent step 3 
+Out from agent step 2 
+Out from agent step 1 
+Done executing 
+Print a list 
+: [answers(question(self,("load-truck",constant("obj23"),constant("tru2"),constant("pos2")),variable(("at",constant("obj23"),constant("pos2"))),true,1),[self]),
+
+answers(question(self,("load-truck",constant("obj21"),constant("tru2"),constant("pos2")),variable(("in",constant("obj21"),constant("tru2"))),false,2),[self]),
+
+answers(question(self,("load-truck",constant("obj21"),constant("tru2"),constant("pos2")),variable(("at",constant("obj21"),constant("pos2"))),true,2),[self]),
+
+answers(question(self,("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,3),[self]),
+
+answers(question(self,("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),variable(("at",constant("tru2"),constant("pos2"))),true,3),[self]),
+
+question(variable(("at",constant("obj23"),constant("apt2"))),false,5)
+
+
+answers(question(self,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,4),[(("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,3)]),
+
+answers(question(1,no,variable(("in",constant("obj23"),constant("tru2"))),false,4),[no]),
+
+answers(question(self,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("obj23"),constant("apt2"))),false,5),[self]),
+
+answers(question(self,("unload-truck",constant("obj23"),constant("tru2"),constant("apt2")),variable(("at",constant("obj23"),constant("apt2"))),false,5),[(3,5)]),
+
+answers(question(self,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("tru2"),constant("apt2"))),false,5),[(("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,3)]),
+
+answers(question(self,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("in",constant("obj21"),constant("tru2"))),false,5),[(("load-truck",constant("obj21"),constant("tru2"),constant("pos2")),variable(("in",constant("obj21"),constant("tru2"))),false,2)]),
+
+answers(question(self,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("obj21"),constant("apt2"))),false,6),[self]),
+
+answers(question(self,("unload-truck",constant("obj21"),constant("tru2"),constant("apt2")),variable(("at",constant("obj21"),constant("apt2"))),false,6),[(3,6)]),
+
+answers(question(self,("drive-truck",constant("tru2"),constant("apt2"),constant("pos2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,6),[(("drive-truck",constant("tru2"),constant("pos2"),constant("apt2"),constant("cit2")),variable(("at",constant("tru2"),constant("apt2"))),false,3)]),
+
+answers(question(self,("load-truck",constant("obj22"),constant("tru2"),constant("pos2")),variable(("in",constant("obj22"),constant("tru2"))),false,12),[self]),answers(question(self,("load-truck",constant("obj22"),constant("tru2"),constant("pos2")),variable(("at",constant("obj22"),constant("pos2"))),true,12),[self])] 
+Print a list 
+: [] 
