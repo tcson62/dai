@@ -215,6 +215,13 @@ preparation(AID, Domain, Problem):-
      process_create(Shell, ['-c', ['clingo ../../../lps/compute_0.lp ', Domain, ' ', Problem, ' --outf=0 -V0 --out-atomf=%s. | head -n1  > ', StepFile]], [process(P1)]),
      process_wait(P1,exit(_)),         
         
+     myExpectedStep(AID, 0, ENEXTFile), 
+     
+     myFormat('copying initial state ~q to expected initial state ~q ~n', [Initial, ENEXTFile]),
+     
+     process_create(Shell, ['-c', ['cp ', StepFile, ' ', ENEXTFile]], [process(P10)]),
+     process_wait(P10,exit(_)),   
+        
      myFormat('*********** ~n Computing the fluents ~n **************~n ', []), 
      
      process_create(Shell, ['-c', ['clingo ../../../lps/compute_fluents.lp ', Domain, ' ', Problem, ' --outf=0 -V0 --out-atomf=%s. | head -n1  > ', FluentFile]], [process(P2)]),
@@ -230,11 +237,11 @@ agent_next_state(AID, Step, Domain, Problem):-
         myFormat('In agent ~q solving step ~q ...~n ',[AID, Step]), 
 
         getenv('SHELL', Shell),                
-        atom_concat(AID, '_agent.lp',AgentFile),   %1_agent.lp     
-        myOccurrenceFile(AID, Step, OCCFile),  
-        myExpectedStep(AID, Previous, ENEXTFile), 
-        atom_concat(' -c t=', Step, COnstant),           %-c t=k 
-	myExpectedStep(AID, Step, StepFile), 
+        atom_concat(AID, '_agent.lp',AgentFile),          %1_agent.lp     
+        myOccurrenceFile(AID, Step, OCCFile),           % occurrence 
+        myExpectedStep(AID, Previous, ENEXTFile),  % expected next 
+        atom_concat(' -c t=', Step, COnstant),               %-c t=k 
+	myExpectedStep(AID, Step, StepFile),          
   	myStepFile(AID, Step, NextFile), 
      		
         myFormat('Executing: clingo ../../../lps/compute_expected_agent.lp  
