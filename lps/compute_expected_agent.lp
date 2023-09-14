@@ -1,5 +1,11 @@
 % clingo compute_expected_agent.lp domain.lp prob1_apn1.lp 1_agent.lp 1_occ_5.lp 1_enext_4.lp -c t=5 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr ' ' '\n'  > 1_enext_5.lp'
 
+%%%%%% change to ???
+%%
+%%% clingo compute_expected_agent.lp domain.lp prob1_apn1.lp 1_agent.lp 1_occ_X.lp 1_enext_X.lp -c t=X --outf=0 -V0 --out-atomf=%s. | head -n1 | tr ' ' '\n'  > 1_enext_[X+1].lp'
+
+
+
 h(F, t) :- eh(F, t). 
 
 h(X, t+1) :- action(AG, action(A)), occurs(AG, A, t), 

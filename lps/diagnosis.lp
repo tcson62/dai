@@ -8,6 +8,12 @@
 
 % question(other,("load-airplane",constant("obj23"),constant("apn1"),constant("apt2")),variable(("at",constant("obj23"),constant("apt2"))),false,4).
 
+%% something is false 
+%% the action is not executable 
+%% then some precondition needs explanation 
+
+
+
 complement(true, false). 
 complement(false, true). 
 

@@ -217,9 +217,9 @@ preparation(AID, Domain, Problem):-
         
      myExpectedStep(AID, 0, ENEXTFile), 
      
-     myFormat('copying initial state ~q to expected initial state ~q ~n', [Initial, ENEXTFile]),
+     myFormat('Setting up expected initial state~n clingo ~q -c t=0 --outf=0 -V0 --out-atomf=%s. | head -n1 >  ~q ~n', [StepFile,  ENEXTFile]),
      
-     process_create(Shell, ['-c', ['cp ', StepFile, ' ', ENEXTFile]], [process(P10)]),
+     process_create(Shell, ['-c', ['clingo ', StepFile, '  -c t=0 --outf=0 -V0 --out-atomf=%s. | head -n1 > ', ENEXTFile]], [process(P10)]),
      process_wait(P10,exit(_)),   
         
      myFormat('*********** ~n Computing the fluents ~n **************~n ', []), 
