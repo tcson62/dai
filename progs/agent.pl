@@ -91,7 +91,7 @@ myFormat(X, Y) :-
 
 myFormat(X) :- 
    setMyDebug(Trace), 
-   (Trace == true -> length(X, NX), format('Print a list ~n: #elements~q ~n ~q ~n', [NX, X]); true). 
+   (Trace == true -> length(X, NX), format('Print a list ~n: #elements is ~q ~n ~q ~n', [NX, X]); true). 
 
 
 myErrorFile(AID, Step, ERRFile) :-  
@@ -219,7 +219,7 @@ preparation(AID, Domain, Problem):-
      
      myFormat('Setting up expected initial state~n clingo ~q -c t=0 --outf=0 -V0 --out-atomf=%s. | head -n1 >  ~q ~n', [StepFile,  ENEXTFile]),
      
-     process_create(Shell, ['-c', ['clingo ', StepFile, '  -c t=0 --outf=0 -V0 --out-atomf=%s. | head -n1 > ', ENEXTFile]], [process(P10)]),
+     process_create(Shell, ['-c', ['clingo ../../../lps/compute_expected_agent.lp ', StepFile, '  -c t=0 --outf=0 -V0 --out-atomf=%s. | head -n1 > ', ENEXTFile]], [process(P10)]),
      process_wait(P10,exit(_)),   
         
      myFormat('*********** ~n Computing the fluents ~n **************~n ', []), 
@@ -278,8 +278,8 @@ agent_step(AID, Domain, Problem, Step):-
         term_string(Occ, Occurrence),
         out(msg(AID, 0, 1, Occ)),
         toCmd([AID, '_occ_', Step, '.lp'], Fname),
-        dump_to_file_occ(Step, Fname),
-        %% dump_to_file([Occ], Fname),        
+	%% dump_to_file_occ(Step, Fname),
+        dump_to_file([Occ], Fname),        
         myFormat('Sent ~q~n and wait for response in step ~q ~n', [Occ, Step]),
         repeat, 
         in(msg(From, AID, Type, Content)),
@@ -309,17 +309,29 @@ processing_message(0, 2, next, AID, Step, Domain, Problem):-
 
 processing_message(Other, 6, answer(F, V, S, A), AID, Step, Domain, Problem):-                  
         % answer for the (V)alue of (F)luent at (S)tep is A
-        myFormat('Receiving answer(~q, ~q, ~q) from ~q! ~n', [F, V, S, A]),
+        myFormat('Receiving answer(~q, ~q, ~q) is ~q from ~q! ~n', [F, V, S, A, Other]),
         assertz(answers(question(Other, no, F, V, S), A)),
         retract(asked(Other, F, V, S)),
           (
             set_diagnosis_mode(propagate)
               ->
                   % need to check if all of my neighbors are asking about this question?
-                  findall(XAg, being_asked(_, XAg, F, V, S), AQFrom),
-                  myFormat(AQFrom),                     
-                  findall(XAg, (being_asked(_, XAg, F, V, S), XAg \= Other), QFrom),
-                  notify(QFrom, F, V, S, A)
+                  myFormat('In propagation ~n',[]),
+                  % findall(XAg, being_asked(_, XAg, F, V, S), AQFrom),
+                  % myFormat(AQFrom),                     
+                  findall(XAg, (being_asked(0, XAg, F, V, S), XAg \= Other), QFrom),
+                  notify(AID, QFrom, F, V, S, A), 
+                  (
+                     received_all_no(AID, F, V, S) 
+                     -> 
+                       myFormat('In propagation === received all NO ~n',[]),
+                       findall(XAg1, (being_asked(1, XAg1, F, V, S), XAg1 \= Other), QTo),
+                       notify(AID, QTo, F, V, S, [no]),
+                       assertz(answers(question(all, no, F, V, S), [no])),
+                       retract(asked(_, F, V, S))
+                     ;
+                       true 
+                  )
               ;  
                true
           ) 
@@ -340,7 +352,7 @@ processing_message(Other, 7, question(F, V, S), AID, Step, Domain, Problem):-
         myFormat('Receiving question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
         assertz(being_asked(0, Other, F, V, S)),
         findall(answers(X,Y), answers(X,Y), LAnswers),
-        myFormat(LAnswers),
+        myFormat('Current answers: ~q~n', [LAnswers]),
         finding_answers(F, V, S, Me),
         (
           length(Me, 0) 
@@ -351,18 +363,21 @@ processing_message(Other, 7, question(F, V, S), AID, Step, Domain, Problem):-
               ->
                   % need to check if all of my neighbors are asking about this question?                  
                   findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
-                  findall(XNew, (neighbor(XNew, _), \+ member(XNew, QFrom)), QAsked),
+                  append(QForm, [Other], Exceptions), 
+                  findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
+                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked])
                   (length(QAsked, 0)
                    ->
                    out(msg(AID, Other, 6, answer(F, V, S, [no])));
                    myFormat('Asking my neighbors .... ', []),
-                   send_to_my_neighbors(F, V, S, [Other])
+                   send_to_my_neighbors(F, V, S, Exceptions)
                   )
             ;
             out(msg(AID, Other, 6, answer(F, V, S, [no])))
           )
           ;
           myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+          myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
           out(msg(AID, Other, 6, answer(F, V, S, Me)))
 %
 %          myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),  
@@ -372,6 +387,16 @@ processing_message(Other, 7, question(F, V, S), AID, Step, Domain, Problem):-
 %          out(msg(AID, Other, 6, answer(F, V, S, Me)))           
         ).         
 %%true.
+
+
+received_all_no(AID, F, V, S) :-
+    findall(X, answers(question(X, no, F, V, S), _), AnswerNo), 
+    myFormat(AnswerNo), 
+    findall(Y, being_asked(1, Y, F, V, S), BeenAsked), 
+    myFormat(BeenAsked), 
+    findall(Z, (member(Z,BeenAsked), \+ member(Z, AnswerNo)), NotAnswers),
+    length(NotAnswers, 0). 
+
 
 is_answers(F, V, S, Causes):-
     answers(question(_, _, F, V, T), Causes),     
@@ -404,7 +429,17 @@ agent_step_diagnosis(AID, Step, Domain, Problem):-
         out(msg(AID, 0, 10, Step))
     ).   
 
-          
+sameList([], []).
+
+sameList([H | T], L):-
+    member(H, L), 
+    delete(L, H, L1), 
+    sameList(T, L1).
+    
+do_wait_for_next(AID, Step, Domain, Problem) :- 
+    out(msg(AID, 0, 10, Step)). 
+
+/*           
 do_wait_for_next(AID, Step, Domain, Problem) :- 
         myFormat('Waiting for the next round to start ...~n',[]), 
         findall(asked(Ind1, Fluent1, Value1, Step1), asked(Ind1, Fluent1, Value1, Step1), LQuestions1), 
@@ -415,6 +450,7 @@ do_wait_for_next(AID, Step, Domain, Problem) :-
          out(msg(AID, 0, 10, Step));  
          true
         ), 
+        append([], [], BeforeLoop), 
   	repeat, 
          in(msg(From, AID, Type, Content)),
          myFormat('Received: from ~q type ~q content ~q~n',[From, Type, Content]), 
@@ -422,24 +458,27 @@ do_wait_for_next(AID, Step, Domain, Problem) :-
           (From, Type, Content) == (0, 10, Step) 
            -> 
                true
-           ;
+               ;
                myFormat('********   Need to process ~q ~q *~q* ~n ', [From, Type, Content]),
                assert(myCheck),
-               (myCheck -> myFormat('Calling processing ~n',[]); true),
+               (myCheck -> myFormat('Calling processing ~q ~q ~q ~q ~q ~n',[From, Type, Content, AID, Step]); true),
 
                processing_message(From, Type, Content, AID, Step, Domain, Problem),
 
                myFormat('Getting out from processing message ------------------ ~n', []),
-               
-           findall(asked(Ind, Fluent, Value, Step), asked(Ind, Fluent, Value, Step), LQuestions), 
-           myFormat('Still needs to resolve xxxx ~q~n',[LQuestions]),    
-           length(LQuestions, NQuestions), 
-           (NQuestions == 0 -> out(msg(AID, 0, 10, Step)); true),
-           NQuestions == 0
+               findall(asked(Ind, Fluent, Value, Step), asked(Ind, Fluent, Value, Step), LQuestions), 
+               myFormat('Still needs to resolve xxxx ~q~n',[LQuestions]),
+               length(LQuestions, NQuestions), 
+               (NQuestions == 0 -> out(msg(AID, 0, 10, Step))
+                ; 
+                (length(BeforeLoop, 0) -> append([], LQuestions, BeforeLoop); true),
+                (sameList(BeforeLoop, LQuestions) -> NQuestions is 0; true) 
+                ),
+                NQuestions == 0
          ),
         !,
 	myFormat('Receiving permission to send action occurrence for the next round ...~n',[]). 
-
+*/
  
 
 
@@ -502,13 +541,15 @@ sending_request_individual(question(other, Act, Fluent, Value, Step)):-
        assertz(answers(question(self, Act, Fluent, Value, Step), Me))
        ; 
        myFormat('I did not find answer for this ~q ~q ~q ~q ~n', [Act, Fluent, Value, Step]),
-       send_to_my_neighbors(Fluent, Value, Step, [])
+       findall(XAsked, being_asked(_, XAsked, Fluent, Value, Step), Exceptions), 
+       myFormat('I already asked these people ~q for answer!~n', [Exceptions]), 
+       send_to_my_neighbors(Fluent, Value, Step, Exceptions)
     ).    
 
 send_to_my_neighbors(Fluent, Value, Step, Exception):-
     agent(AID, _), 
-    myFormat('Need to ask for help from neighbor  ~n', [ ]),
     findall(X, (neighbor(X, _), \+ member(X, Exception)), Neighbors),
+    myFormat('Need to ask for help from neighbor ~q ~n', [Neighbors ]),
     (length(Neighbors, 0)   
             -> 
             true; 
@@ -525,9 +566,9 @@ sending_request_neighbors([Ind | Neighbors], Fluent, Value, Step):-
     assertz(being_asked(1, Ind, Fluent, Value, Step)),
     sending_request_neighbors(Neighbors, Fluent, Value, Step).  
 
-notify([], _, _, _, _).
+notify(_, [], _, _, _, _).
 
-notify([ID | LAgents], Fluent, Value, Step, Ans):-
-     out(diag(AID, ID, 2, (Fluent, Value, Step, Ans))),
-     notify([ID | LAgents], Fluent, Value, Step, Ans).       
+notify(AID, [ID | LAgents], Fluent, Value, Step, Ans):-
+     out(msg(AID, ID, 6, answer(Fluent, Value, Step, Ans))), 
+     notify(AID, LAgents, Fluent, Value, Step, Ans).       
 
