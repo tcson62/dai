@@ -90,8 +90,8 @@ question(other, A, X, true, t-1) :- agent(_, AG),
 %  conflict(X, t). 
 
 
-%#show. 
-%#show question/5.
-% #show need_to_ask/3.  
+#show. 
+#show question/5.
+%#show need_to_ask/3.  
 %#show send_to_ask/3. 
 

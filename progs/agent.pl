@@ -22,7 +22,8 @@
 :- dynamic being_asked/5.        %%% asking agent or being_asked - agent - fluent - value - step [1/0, Ind, F , V, S]  
 
 :- dynamic myCheck.
-
+:- dynamic maxStep.
+ 
 %%% Version 1
 
 %% agent start with an index 
@@ -40,15 +41,16 @@ Message format msg(From, To, Type, Content)
 Message type 
 
 Sending: to 0 => 
-         1 - action occurrence or none 
+         1 - action occuA Garcez, M Gori, LC Lamb, L Serafini, M Spranger, and SN Tran. Neural-symbolic computing: An effective methodology for principled integration of machine learning and reasoning. Journal of Applied Logics, 6(4):611–632, 2019rrence or none 
          3 - done 
          5 - need to wait for diagnosis 
          10 - done with current step 
          
 
 Receiving: from 0 
-         2 - done or next 
-         4 - wait 
+         2 - done 
+         2 - or next(S) with S is the current step  
+         10 -   
 
 Receiving from others: question or answer 
 
@@ -166,8 +168,9 @@ load_agent_config(Config):-
      % read the configuation 
      start,  
      load_files(Config), 
-     findall(Occs, occurs(_, Occs, _), LOccurs), 
+     findall((Occs, S),  occurs(_, Occs, S), LOccurs), 
      length(LOccurs, NSteps),
+     assert(maxStep(NSteps)), 
      domain(Domain), 
      problem(Problem), 
      format('Number of steps ~q~n Domain ~q~n Problem ~q~n', [NSteps, Domain, Problem]),
@@ -184,7 +187,8 @@ load_agent_config(Config):-
      
      format('Done starting ~n',[]),
      preparation(AID, Domain, Problem),     
-     agent_step(AID, Domain, Problem, 1),
+     agent_loop(AID, Domain, Problem),
+     %% agent_step(AID, Domain, Problem, 1),
      format('Done executing ~n',[]),
      out(msg(AID, 0, 3, done)), 
      findall(answers(X,Y), answers(X,Y), LAnswers), 
@@ -196,10 +200,11 @@ load_agent_config(Config):-
 gettingOccurrence(Step, Occurrence):-  
     ( occurs(N, A, Step) 
        ->
-       term_string(occurs(N, A, Step), Occurrence)
+           term_string(occurs(N, A, Step), Occ)
        ; 
-       term_string(none, Occurrence)
-     ). 
+       term_string(none, Occ)
+       ),
+    term_string(Occurrence, Occ). 
         
 preparation(AID, Domain, Problem):-
      format('In preparation ~n',[]),
@@ -244,8 +249,7 @@ agent_next_state(AID, Step, Domain, Problem):-
 	myExpectedStep(AID, Step, StepFile),          
   	myStepFile(AID, Step, NextFile), 
      		
-        myFormat('Executing: clingo ../../../lps/compute_expected_agent.lp  
-                  ~q ~q ~q ~q  ~q ~q  --outf=0 -V0 --out-atomf=%s. | head -n1  > ~q ~n!', 
+        myFormat('Executing: clingo ../../../lps/compute_expected_agent.lp ~q ~q ~q ~q  ~q ~q  --outf=0 -V0 --out-atomf=%s. | head -n1  > ~q ~n!', 
 		[Domain, Problem,  AgentFile, OCCFile,  ENEXTFile, COnstant, StepFile]),  
      	
         process_create(Shell, ['-c', ['clingo ../../../lps/compute_expected_agent.lp ', 
@@ -269,13 +273,139 @@ agent_next_state(AID, Step, Domain, Problem):-
         			      ERRFile]], [process(P2)]),
         process_wait(P2,exit(_)).        
 
+
 % activities of agent in each step 
 % 
+
+agent_loop(AID, Domain, Problem):-
+    % Step starts from 1 to maxStep  
+    % sending the action
+    % getting the result
+    % compute own state
+    % diagnosis
+    % wait for responses
+    % waiiting for messages and then process it until there is no message from anyone 
+    myFormat("In the loop ... ~n", []),
+    repeat,
+        in(msg(From, AID, Type, Content)),
+        myFormat("Receiving ... ~q From, ~q Type, ~q Content --- ~n", [From, Type, Content]), 
+        processing_msg(From, Type, Content, AID, Domain, Problem), 
+        (From, Type, Content) == (0, 2, done),
+        mystop, 
+    !, 
+    myFormat('Out from agent step ~q ~n',[Step]).
+    
+    
+%%% no more action to be executed 
+%%% this needs to check for any other messages being unresponsive etc.     
+    
+processing_msg(0, 2, done, _, _, _):-
+        assertz(mystop),  
+	myFormat('All done ~n',[ ]).
+
+%%% get the request for the action at Step 
+
+processing_msg(0, 2, next(Step), AID, Domain, Problem):-
+       	format('Step sending action ~q~n', [Step]),
+       	gettingOccurrence(Step, Occurrence), 
+       	toCmd([AID, '_occ_', Step, '.lp'], Fname),
+        dump_to_file([Occurrence], Fname),        
+       	maxStep(Length),  
+       	(Step > Length             
+       	   -> 
+       	   myFormat('Done with executing all actions ~q ======================= ~n', [Step]),    
+       	   out(msg(AID, 0, 1, Occurrence)), 
+    	   true;
+    	   out(msg(AID, 0, 1, Occurrence)),    
+           myFormat('Done sending action at step ~q ~q ======================= ~n', [Occurrence, Step])
+        ).    
+    
+%%% get the observations 
+processing_msg(0, 10, next(Step), AID, Domain, Problem):-
+       	format('Step processing observations ~q~n', [Step]),
+       	maxStep(Length),  
+       	(Step > Length             
+       	   -> 
+       	   myFormat('Done with executing all actions ~q ======================= ~n', [Step]),    
+    	   true;
+      	   agent_next_state(AID, Step, Domain, Problem),
+           agent_step_diagnosis(AID, Step, Domain, Problem),    
+           myFormat('Done initiallizing the diagnosis at step ~q ======================= ~n', [Step])
+        ).    
+    
+
+%%% message from a neighbor with an answer 
+
+processing_msg(Other, 6, answer(F, V, Step, A), AID, Domain, Problem):-                  
+        % answer for the (V)alue of (F)luent at (S)tep is A
+        myFormat('Receiving answer(~q, ~q, ~q) is ~q from ~q! ~n', [F, V, S, A, Other]),
+        assertz(answers(question(Other, no, F, V, S), A)),
+        retract(asked(Other, F, V, S)),
+          (
+            set_diagnosis_mode(propagate)
+              ->
+                  % need to check if all of my neighbors are asking about this question?
+                  myFormat('In propagation ~n',[]),
+                  % findall(XAg, being_asked(_, XAg, F, V, S), AQFrom),
+                  % myFormat(AQFrom),                     
+                  findall(XAg, (being_asked(0, XAg, F, V, S), XAg \= Other), QFrom),
+                  notify(AID, QFrom, F, V, S, A), 
+                  (
+                     received_all_no(AID, F, V, S) 
+                     -> 
+                       myFormat('In propagation === received all NO ~n',[]),
+                       findall(XAg1, (being_asked(1, XAg1, F, V, S), XAg1 \= Other), QTo),
+                       notify(AID, QTo, F, V, S, [no]),
+                       assertz(answers(question(all, no, F, V, S), [no])),
+                       retract(asked(_, F, V, S))
+                     ;
+                       true 
+                  )
+              ;  
+               true
+          ) 
+        .  
+    
+processing_msg(Other, 7, question(F, V, Step), AID, Domain, Problem):-                  
+    % need to find answer for the (V)alue of (F)luent at (S)tep
+        myFormat('Receiving question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+        assertz(being_asked(0, Other, F, V, S)),
+        findall(answers(X,Y), answers(X,Y), LAnswers),
+        myFormat('Current answers: ~q~n', [LAnswers]),
+        finding_answers(F, V, S, Me),
+        (
+          length(Me, 0) 
+          ->
+          myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+          (
+            set_diagnosis_mode(propagate)
+              ->
+                  % need to check if all of my neighbors are asking about this question?                  
+                  findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
+                  append(QForm, [Other], Exceptions), 
+                  findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
+                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked]), 
+                  (length(QAsked, 0)
+                   ->
+                   out(msg(AID, Other, 6, answer(F, V, S, [no])));
+                   myFormat('Asking my neighbors .... ', []),
+                   send_to_my_neighbors(F, V, S, Exceptions)
+                  )
+            ;
+            out(msg(AID, Other, 6, answer(F, V, S, [no])))
+          )
+          ;
+          myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+          myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
+          out(msg(AID, Other, 6, answer(F, V, S, Me)))
+        ).         
+
+
 
 agent_step(AID, Domain, Problem, Step):-
        	format('Step ~q~n', [Step]),
        	gettingOccurrence(Step, Occurrence),
-        term_string(Occ, Occurrence),
+        %term_string(Occ, Occurrence),
         out(msg(AID, 0, 1, Occ)),
         toCmd([AID, '_occ_', Step, '.lp'], Fname),
 	%% dump_to_file_occ(Step, Fname),
@@ -365,7 +495,7 @@ processing_message(Other, 7, question(F, V, S), AID, Step, Domain, Problem):-
                   findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
                   append(QForm, [Other], Exceptions), 
                   findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
-                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked])
+                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked]),
                   (length(QAsked, 0)
                    ->
                    out(msg(AID, Other, 6, answer(F, V, S, [no])));
@@ -435,52 +565,6 @@ sameList([H | T], L):-
     member(H, L), 
     delete(L, H, L1), 
     sameList(T, L1).
-    
-do_wait_for_next(AID, Step, Domain, Problem) :- 
-    out(msg(AID, 0, 10, Step)). 
-
-/*           
-do_wait_for_next(AID, Step, Domain, Problem) :- 
-        myFormat('Waiting for the next round to start ...~n',[]), 
-        findall(asked(Ind1, Fluent1, Value1, Step1), asked(Ind1, Fluent1, Value1, Step1), LQuestions1), 
-        myFormat('Still needs to resolve ~q~n',[LQuestions1]),    
-	(
-         length(LQuestions1, 0)
-         -> 	
-         out(msg(AID, 0, 10, Step));  
-         true
-        ), 
-        append([], [], BeforeLoop), 
-  	repeat, 
-         in(msg(From, AID, Type, Content)),
-         myFormat('Received: from ~q type ~q content ~q~n',[From, Type, Content]), 
-         (
-          (From, Type, Content) == (0, 10, Step) 
-           -> 
-               true
-               ;
-               myFormat('********   Need to process ~q ~q *~q* ~n ', [From, Type, Content]),
-               assert(myCheck),
-               (myCheck -> myFormat('Calling processing ~q ~q ~q ~q ~q ~n',[From, Type, Content, AID, Step]); true),
-
-               processing_message(From, Type, Content, AID, Step, Domain, Problem),
-
-               myFormat('Getting out from processing message ------------------ ~n', []),
-               findall(asked(Ind, Fluent, Value, Step), asked(Ind, Fluent, Value, Step), LQuestions), 
-               myFormat('Still needs to resolve xxxx ~q~n',[LQuestions]),
-               length(LQuestions, NQuestions), 
-               (NQuestions == 0 -> out(msg(AID, 0, 10, Step))
-                ; 
-                (length(BeforeLoop, 0) -> append([], LQuestions, BeforeLoop); true),
-                (sameList(BeforeLoop, LQuestions) -> NQuestions is 0; true) 
-                ),
-                NQuestions == 0
-         ),
-        !,
-	myFormat('Receiving permission to send action occurrence for the next round ...~n',[]). 
-*/
- 
-
 
 % agent_solve: computing and diagnosis 
 % check for the need to have a diagnosis 
