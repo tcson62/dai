@@ -376,10 +376,10 @@ processing_msg(Other, 7, question(F, V, Step), AID, Domain, Problem):-
         (
           length(Me, 0) 
           ->
-          myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-          (
-            set_diagnosis_mode(propagate)
-              ->
+             myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+             (
+               set_diagnosis_mode(propagate)
+                 ->
                   % need to check if all of my neighbors are asking about this question?                  
                   findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
                   append(QForm, [Other], Exceptions), 
@@ -387,17 +387,19 @@ processing_msg(Other, 7, question(F, V, Step), AID, Domain, Problem):-
                   myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked]), 
                   (length(QAsked, 0)
                    ->
-                   out(msg(AID, Other, 6, answer(F, V, S, [no])));
+                   myFormat('Answer with no .... ', []),
+                   out(msg(AID, Other, 6, answer(F, V, S, [no])))
+                   ;
                    myFormat('Asking my neighbors .... ', []),
                    send_to_my_neighbors(F, V, S, Exceptions)
                   )
-            ;
-            out(msg(AID, Other, 6, answer(F, V, S, [no])))
-          )
-          ;
-          myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-          myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
-          out(msg(AID, Other, 6, answer(F, V, S, Me)))
+               ;
+               out(msg(AID, Other, 6, answer(F, V, S, [no])))
+             )
+             ;
+             myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
+             myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
+             out(msg(AID, Other, 6, answer(F, V, S, Me)))
         ).         
 
 
@@ -412,18 +414,18 @@ agent_step(AID, Domain, Problem, Step):-
         dump_to_file([Occ], Fname),        
         myFormat('Sent ~q~n and wait for response in step ~q ~n', [Occ, Step]),
         repeat, 
-        in(msg(From, AID, Type, Content)),
-        myFormat('Received - main loop: from ~q type ~q content ~q~n',[From, Type, Content]), 
-        myFormat('Processing: from ~q type ~q content ~q~n',[From, Type, Content]), 
-        processing_message(From, Type, Content, AID, Step, Domain, Problem),
-        ((From, Type, Content) == (0, 2, next) 
-         -> 
+           in(msg(From, AID, Type, Content)),
+           myFormat('Received - main loop: from ~q type ~q content ~q~n',[From, Type, Content]), 
+           myFormat('Processing: from ~q type ~q content ~q~n',[From, Type, Content]), 
+           processing_message(From, Type, Content, AID, Step, Domain, Problem),
+           ((From, Type, Content) == (0, 2, next) 
+            -> 
             Next is Step + 1, 
             myFormat('Will run step ~q when From and Type and Content are ~q ~q ~q ~n', [Next, From, Type, Content]),
             agent_step(AID, Domain, Problem, Next);
             true
-         ),
-         mystop, 
+           ),
+           mystop, 
         !, 
         myFormat('Out from agent step ~q ~n',[Step]).
 
