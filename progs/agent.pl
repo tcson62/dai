@@ -23,7 +23,9 @@
 
 :- dynamic myCheck.
 :- dynamic maxStep.
- 
+
+:- discontiguous processing_msg/6.
+
 %%% Version 1
 
 %% agent start with an index 
@@ -153,6 +155,12 @@ dump_to_file_occ(Step, Fname):-
      nl(Out),  
      close(Out).      
 
+sameList([], []).
+
+sameList([H | T], L):-
+    member(H, L), 
+    delete(L, H, L1), 
+    sameList(T, L1).
 
 %%% End auxiliary predicates 
 
@@ -192,9 +200,9 @@ load_agent_config(Config):-
      format('Done executing ~n',[]),
      out(msg(AID, 0, 3, done)), 
      findall(answers(X,Y), answers(X,Y), LAnswers), 
-     myFormat(LAnswers),
-     findall((P,Q,R,S), being_asked(_,P,Q,R,S), LAsks), 
-     myFormat(LAsks).
+     myFormat('List of answers ~n ~q ~n~n', [LAnswers]),
+     findall((X,P,Q,R,S), being_asked(X,P,Q,R,S), LAsks), 
+     myFormat('List of questions that I sent and received ~n ~q ~n~n', [LAsks]).
 %%% 
 
 gettingOccurrence(Step, Occurrence):-  
@@ -288,12 +296,12 @@ agent_loop(AID, Domain, Problem):-
     myFormat("In the loop ... ~n", []),
     repeat,
         in(msg(From, AID, Type, Content)),
-        myFormat("Receiving ... ~q From, ~q Type, ~q Content --- ~n", [From, Type, Content]), 
+        myFormat("Receiving ... From ~q  Type ~q Content ~q --- ~n", [From, Type, Content]), 
         processing_msg(From, Type, Content, AID, Domain, Problem), 
         (From, Type, Content) == (0, 2, done),
         mystop, 
     !, 
-    myFormat('Out from agent step ~q ~n',[Step]).
+    myFormat('Out from agent loop ~n',[]).
     
     
 %%% no more action to be executed 
@@ -317,14 +325,14 @@ processing_msg(0, 2, next(Step), AID, Domain, Problem):-
        	   out(msg(AID, 0, 1, Occurrence)), 
     	   true;
     	   out(msg(AID, 0, 1, Occurrence)),    
-           myFormat('Done sending action at step ~q ~q ======================= ~n', [Occurrence, Step])
+           myFormat('Done sending action ~q at step ~q ======================= ~n', [Occurrence, Step])
         ).    
     
 %%% get the observations 
 processing_msg(0, 10, next(Step), AID, Domain, Problem):-
        	format('Step processing observations ~q~n', [Step]),
        	maxStep(Length),  
-       	(Step > Length             
+       	(Step >  Length             
        	   -> 
        	   myFormat('Done with executing all actions ~q ======================= ~n', [Step]),    
     	   true;
@@ -336,195 +344,90 @@ processing_msg(0, 10, next(Step), AID, Domain, Problem):-
 
 %%% message from a neighbor with an answer 
 
-processing_msg(Other, 6, answer(F, V, Step, A), AID, Domain, Problem):-                  
+processing_msg(Other, 6, answer(F, V, Step, A), AID, _, _):-                  
         % answer for the (V)alue of (F)luent at (S)tep is A
-        myFormat('Receiving answer(~q, ~q, ~q) is ~q from ~q! ~n', [F, V, S, A, Other]),
-        assertz(answers(question(Other, no, F, V, S), A)),
-        retract(asked(Other, F, V, S)),
-          (
-            set_diagnosis_mode(propagate)
-              ->
-                  % need to check if all of my neighbors are asking about this question?
-                  myFormat('In propagation ~n',[]),
-                  % findall(XAg, being_asked(_, XAg, F, V, S), AQFrom),
-                  % myFormat(AQFrom),                     
-                  findall(XAg, (being_asked(0, XAg, F, V, S), XAg \= Other), QFrom),
-                  notify(AID, QFrom, F, V, S, A), 
-                  (
-                     received_all_no(AID, F, V, S) 
-                     -> 
-                       myFormat('In propagation === received all NO ~n',[]),
-                       findall(XAg1, (being_asked(1, XAg1, F, V, S), XAg1 \= Other), QTo),
-                       notify(AID, QTo, F, V, S, [no]),
-                       assertz(answers(question(all, no, F, V, S), [no])),
-                       retract(asked(_, F, V, S))
-                     ;
-                       true 
-                  )
-              ;  
-               true
-          ) 
-        .  
-    
-processing_msg(Other, 7, question(F, V, Step), AID, Domain, Problem):-                  
-    % need to find answer for the (V)alue of (F)luent at (S)tep
-        myFormat('Receiving question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-        assertz(being_asked(0, Other, F, V, S)),
-        findall(answers(X,Y), answers(X,Y), LAnswers),
-        myFormat('Current answers: ~q~n', [LAnswers]),
-        finding_answers(F, V, S, Me),
-        (
-          length(Me, 0) 
-          ->
-             myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-             (
-               set_diagnosis_mode(propagate)
-                 ->
-                  % need to check if all of my neighbors are asking about this question?                  
-                  findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
-                  append(QForm, [Other], Exceptions), 
-                  findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
-                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked]), 
-                  (length(QAsked, 0)
-                   ->
-                   myFormat('Answer with no .... ', []),
-                   out(msg(AID, Other, 6, answer(F, V, S, [no])))
-                   ;
-                   myFormat('Asking my neighbors .... ', []),
-                   send_to_my_neighbors(F, V, S, Exceptions)
-                  )
-               ;
-               out(msg(AID, Other, 6, answer(F, V, S, [no])))
-             )
-             ;
-             myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-             myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
-             out(msg(AID, Other, 6, answer(F, V, S, Me)))
-        ).         
+        myFormat('Receiving answer(~q, ~q, ~q) is ~q from ~q! ~n', [F, V, Step, A, Other]),
+        (answers(question(Other, no, F, V, Step), A)
+         -> 
+         true; 
+         assertz(answers(question(Other, no, F, V, Step), A)),
+         processing_answer(Other, 6, answer(F, V, Step, A), AID)
+        ),
+        retract(asked(Other, F, V, Step)).
 
-/*********************************************
+% answer is [no]
 
-agent_step(AID, Domain, Problem, Step):-
-       	format('Step ~q~n', [Step]),
-       	gettingOccurrence(Step, Occurrence),
-        %term_string(Occ, Occurrence),
-        out(msg(AID, 0, 1, Occ)),
-        toCmd([AID, '_occ_', Step, '.lp'], Fname),
-	%% dump_to_file_occ(Step, Fname),
-        dump_to_file([Occ], Fname),        
-        myFormat('Sent ~q~n and wait for response in step ~q ~n', [Occ, Step]),
-        repeat, 
-           in(msg(From, AID, Type, Content)),
-           myFormat('Received - main loop: from ~q type ~q content ~q~n',[From, Type, Content]), 
-           myFormat('Processing: from ~q type ~q content ~q~n',[From, Type, Content]), 
-           processing_message(From, Type, Content, AID, Step, Domain, Problem),
-           ((From, Type, Content) == (0, 2, next) 
-            -> 
-            Next is Step + 1, 
-            myFormat('Will run step ~q when From and Type and Content are ~q ~q ~q ~n', [Next, From, Type, Content]),
-            agent_step(AID, Domain, Problem, Next);
-            true
-           ),
-           mystop, 
-        !, 
-        myFormat('Out from agent step ~q ~n',[Step]).
-**************************************************************/
-
-processing_message(0, 2, done, _, _, _, _):-
-        assertz(mystop),  
-	myFormat('All done ~n',[ ]).
-
-processing_message(0, 2, next, AID, Step, Domain, Problem):-                  
-        agent_next_state(AID, Step, Domain, Problem),
-        agent_step_diagnosis(AID, Step, Domain, Problem),    
-        do_wait_for_next(AID, Step, Domain, Problem), 
-        myFormat('Done computing at step ~q ======================= ~n', [Step]).
-
-processing_message(Other, 6, answer(F, V, S, A), AID, Step, Domain, Problem):-                  
-        % answer for the (V)alue of (F)luent at (S)tep is A
-        myFormat('Receiving answer(~q, ~q, ~q) is ~q from ~q! ~n', [F, V, S, A, Other]),
-        assertz(answers(question(Other, no, F, V, S), A)),
-        retract(asked(Other, F, V, S)),
-          (
-            set_diagnosis_mode(propagate)
-              ->
-                  % need to check if all of my neighbors are asking about this question?
-                  myFormat('In propagation ~n',[]),
-                  % findall(XAg, being_asked(_, XAg, F, V, S), AQFrom),
-                  % myFormat(AQFrom),                     
-                  findall(XAg, (being_asked(0, XAg, F, V, S), XAg \= Other), QFrom),
-                  notify(AID, QFrom, F, V, S, A), 
-                  (
-                     received_all_no(AID, F, V, S) 
-                     -> 
-                       myFormat('In propagation === received all NO ~n',[]),
-                       findall(XAg1, (being_asked(1, XAg1, F, V, S), XAg1 \= Other), QTo),
-                       notify(AID, QTo, F, V, S, [no]),
-                       assertz(answers(question(all, no, F, V, S), [no])),
-                       retract(asked(_, F, V, S))
-                     ;
-                       true 
-                  )
-              ;  
-               true
-          ) 
-        .  
-        %true. 
-
-%           processing_message(From, Type, Content, AID, Step, Domain, Problem),
-
-processing_message(Other, 7, question(F, V, S), AID, Step, Domain, Problem):-                  
-    % need to find answer for the (V)alue of (F)luent at (S)tep
-        myFormat(' ******** processing request from other ****** ~n', []), 
-%        (myCheck ->
-%            myFormat('The bad case ************~n', []),
-%            retract(myCheck)
-%            ;
-%            myFormat('The normal case ******** ~n', [])
-%        ), 
-        myFormat('Receiving question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-        assertz(being_asked(0, Other, F, V, S)),
-        findall(answers(X,Y), answers(X,Y), LAnswers),
-        myFormat('Current answers: ~q~n', [LAnswers]),
-        finding_answers(F, V, S, Me),
-        (
-          length(Me, 0) 
-          ->
-          myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-          (
-            set_diagnosis_mode(propagate)
-              ->
-                  % need to check if all of my neighbors are asking about this question?                  
-                  findall(XAg, being_asked(_, XAg, F, V, S), QFrom),
-                  append(QForm, [Other], Exceptions), 
-                  findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
-                  myFormat('Being asked ~q ~nTo be asekd ~q~n', [Exceptions, QAsked]),
-                  (length(QAsked, 0)
-                   ->
-                   out(msg(AID, Other, 6, answer(F, V, S, [no])));
-                   myFormat('Asking my neighbors .... ', []),
-                   send_to_my_neighbors(F, V, S, Exceptions)
-                  )
+processing_answer(Other, 6, answer(F, V, Step, [no]), AID):- 
+        (received_all_no(AID, F, V, Step)
+            ->
+            myFormat('In propagation === received all NO ~n',[]),
+            findall(XAg1, (being_asked(1, XAg1, F, V, Step), XAg1 \= Other), QTo),
+            notify(AID, QTo, F, V, Step, [no]),
+            retract(asked(_, F, V, Step))        
             ;
-            out(msg(AID, Other, 6, answer(F, V, S, [no])))
-          )
-          ;
-          myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),
-          myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
-          out(msg(AID, Other, 6, answer(F, V, S, Me)))
-%
-%          myFormat('Did not find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),  
-%          out(msg(AID, Other, 6, answer(F, V, S, [no])))
-%          ;
-%          myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, S, V, Other]),  
-%          out(msg(AID, Other, 6, answer(F, V, S, Me)))           
-        ).         
-%%true.
+            retract(asked(Other, F, V, Step))
+        ).        
+        
+
+% answer is not [no]
+
+processing_answer(Other, 6, answer(F, V, Step, A), AID):-
+        \+ sameList(A, [no]),
+        % sending to those who have asked about this question 
+        % or those that I have asked about this question 
+        myFormat('In propagation with answer ~q  ~n',[A]),
+        findall(XAg, (being_asked(1, XAg, F, V, Step), XAg \= Other), QFrom),
+        myFormat('Notify ~q for the question(~q, ~q, ~q) with answer ~q ~n', [QFrom, F, V, Step, A]),
+        notify(AID, QFrom, F, V, Step, A),
+        retract(asked(_, F, V, Step)).    
+    
+processing_msg(Other, 7, question(F, V, Step), AID, _, _):-                  
+        % need to find answer for the (V)alue of (F)luent at (S)tep
+        myFormat('Receiving question(~q, ~q, ~q) from ~q! ~n', [F, V, Step, Other]),
+        (being_asked(0, Other, F, V, Step)
+           -> 
+           myFormat('I already received the question(~q, ~q, ~q) from ~q! ~n', [F, V, Step, Other]),
+           true;
+           assertz(being_asked(0, Other, F, V, Step)),
+           findall(answers(X,Y), answers(X,Y), LAnswers),
+           myFormat('Current answers I stored: ~q~n', [LAnswers]),
+           finding_answers(F, V, Step, Me),
+           (
+           length(Me, 0) 
+            ->
+             myFormat('Did not find answer to the question(~q, ~q, ~q) from ~q! ~n', [F, V, Step, Other]),
+             processing_question_with_no_answer(Other, 7, question(F, V, Step), AID)
+             ; 
+             myFormat('Find answer question(~q, ~q, ~q) from ~q! ~n', [F, V, Step, Other]),
+             myFormat('Sending ~q the answer  ~q! ~n', [Other, Me]),
+             out(msg(AID, Other, 6, answer(F, V, Step, Me)))
+           ) 
+        ).                
+
+processing_question_with_no_answer(Other, 7, question(F, V, Step), AID):- 
+        % need to check if all of my neighbors are asking about this question?                  
+        findall(XAg, being_asked(_, XAg, F, V, Step), QFrom),
+        myFormat('Has been discussing with ~q about this question(~q, ~q, ~q) now is ~q ~n',[QFrom, F, V, Step, Other]),         
+        (length(QFrom, 0) 
+          ->   
+          append([], [Other], Exceptions);
+          append(QFrom, [Other], Exceptions)
+        ), 
+        findall(XNew, (neighbor(XNew, _), \+ member(XNew, Exceptions)), QAsked),
+        myFormat('Being asked ~q ~nTo be asked ~q~n', [Exceptions, QAsked]),  
+        (length(QAsked, 0)
+           ->
+           myFormat('Answer with no .... ', []),
+           out(msg(AID, Other, 6, answer(F, V, Step, [no])))
+           ;
+           myFormat('Asking my neighbors .... ', []),
+           send_to_my_neighbors(F, V, Step, Exceptions)
+        ). 
 
 
 received_all_no(AID, F, V, S) :-
     findall(X, answers(question(X, no, F, V, S), _), AnswerNo), 
-    myFormat(AnswerNo), 
+    myFormat('List of people who answered with no to the question(~q,~q,~q) is ~q ~n', [F, V, S, AnswerNo]), 
     findall(Y, being_asked(1, Y, F, V, S), BeenAsked), 
     myFormat(BeenAsked), 
     findall(Z, (member(Z,BeenAsked), \+ member(Z, AnswerNo)), NotAnswers),
@@ -562,13 +465,6 @@ agent_step_diagnosis(AID, Step, Domain, Problem):-
         out(msg(AID, 0, 10, Step))
     ).   
 
-sameList([], []).
-
-sameList([H | T], L):-
-    member(H, L), 
-    delete(L, H, L1), 
-    sameList(T, L1).
-
 % agent_solve: computing and diagnosis 
 % check for the need to have a diagnosis 
 
@@ -591,20 +487,6 @@ do_diagnosis(AID, Step, Domain, Problem):-
      myFormat('This needs to be resolved ~q at Step ~q!~n', [LQuestions, Step]),
      sending_request(LQuestions),
      true.
-     %% do_wait_for_response(AID, Step, Domain, Problem).
-     
-
-do_wait_for_response(AID, Step, Domain, Problem)  :-   
-     repeat,
-        findall((NIn, Fluent, Value, Step), asked(NIn, Fluent, Value, Step), LQuestionsT),   
-        (length(LQuestionsT, 0) -> 
-           true;
-           in(msg(OtherID, AID, 6, answer(F, V, S, Cause))),
-           assertz(answers(question(OtherID, no, F, V, S), Cause)),
-           retract(asked(OtherID, F, V, S)) 
-        ),  
-     !.
-
      
 sending_request([]).
 
@@ -648,9 +530,9 @@ sending_request_neighbors([], _, _, _).
 sending_request_neighbors([Ind | Neighbors], Fluent, Value, Step):-
     agent(AID, _), 
     myFormat('I send a message to ~q for question(~q, ~q, ~q) !~n', [Ind, Fluent, Value, Step]),   
-    out(msg(AID, Ind, 7, question(Fluent, Value, Step))),
     assertz(asked(Ind, Fluent, Value, Step)),
     assertz(being_asked(1, Ind, Fluent, Value, Step)),
+    out(msg(AID, Ind, 7, question(Fluent, Value, Step))),
     sending_request_neighbors(Neighbors, Fluent, Value, Step).  
 
 notify(_, [], _, _, _, _).
