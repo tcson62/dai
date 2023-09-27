@@ -330,7 +330,7 @@ processing_msg(0, 10, next(Step), AID, Domain, Problem):-
     	   true;
       	   agent_next_state(AID, Step, Domain, Problem),
            agent_step_diagnosis(AID, Step, Domain, Problem),    
-           myFormat('Done initiallizing the diagnosis at step ~q ======================= ~n', [Step])
+           myFormat('Done initializing the diagnosis at step ~q ======================= ~n', [Step])
         ).    
     
 
@@ -402,7 +402,7 @@ processing_msg(Other, 7, question(F, V, Step), AID, Domain, Problem):-
              out(msg(AID, Other, 6, answer(F, V, S, Me)))
         ).         
 
-
+/*********************************************
 
 agent_step(AID, Domain, Problem, Step):-
        	format('Step ~q~n', [Step]),
@@ -428,6 +428,7 @@ agent_step(AID, Domain, Problem, Step):-
            mystop, 
         !, 
         myFormat('Out from agent step ~q ~n',[Step]).
+**************************************************************/
 
 processing_message(0, 2, done, _, _, _, _):-
         assertz(mystop),  
