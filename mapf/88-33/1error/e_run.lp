@@ -1,4 +1,4 @@
-TIPC Linda server now listening at: port_id('<0.0.0:227973266>')
+TIPC Linda server now listening at: port_id('<0.0.0:621179915>')
 All agents has started successfully!
 Number of agents 3
  Domain 'mapf_domain.lp'
@@ -19,14 +19,14 @@ Got occurs(2,("up",2,0,0,1),1) of type 1 (action occurrence) from agent 2
 List of action occurrences [(1,occurs(2,("up",2,0,0,1),1),2,1)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("down",1,7,7,6),1) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(2,("up",2,0,0,1),1),2,1),(1,occurs(1,("down",1,7,7,6),1),1,1)]
+Got occurs(3,("stay",3,6,0),1) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("up",2,0,0,1),1),2,1),(1,occurs(3,("stay",3,6,0),1),3,1)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("stay",3,6,0),1) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(2,("up",2,0,0,1),1),2,1),(1,occurs(1,("down",1,7,7,6),1),1,1),(1,occurs(3,("stay",3,6,0),1),3,1)]
+Got occurs(1,("down",1,7,7,6),1) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(2,("up",2,0,0,1),1),2,1),(1,occurs(3,("stay",3,6,0),1),3,1),(1,occurs(1,("down",1,7,7,6),1),1,1)]
 List of action that will be executed 
-   [occurs(2,("up",2,0,0,1),1),occurs(1,("down",1,7,7,6),1),occurs(3,("stay",3,6,0),1)]
+   [occurs(2,("up",2,0,0,1),1),occurs(3,("stay",3,6,0),1),occurs(1,("down",1,7,7,6),1)]
 Computing next state at step 1
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_1.lp errors.lp mapf_domain.lp next_0.lp -c t=1 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_1.lp'
@@ -52,30 +52,30 @@ Sending agent 2 this message (Type, Content) ==> 2 next(2)
 Sending agent 3 this message (Type, Content) ==> 2 next(2) 
 Complete sending this message (Type, Content) ==> 2 next(2) 
 Waiting ... 
-Got 1 of type 10 (action occurrence) from agent 1
+Got 1 of type 10 (action occurrence) from agent 3
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("left",1,7,6,6),2) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("left",1,7,6,6),2),1,2)]
-Do not receive all actions yet 
-Waiting ... 
-Got 1 of type 10 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("left",1,7,6,6),2),1,2)]
-Do not receive all actions yet 
-Waiting ... 
 Got occurs(3,("up",3,6,0,1),2) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("left",1,7,6,6),2),1,2),(1,occurs(3,("up",3,6,0,1),2),3,2)]
+List of action occurrences [(1,occurs(3,("up",3,6,0,1),2),3,2)]
+Do not receive all actions yet 
+Waiting ... 
+Got 1 of type 10 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("up",3,6,0,1),2),3,2)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(1,("left",1,7,6,6),2) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("up",3,6,0,1),2),3,2),(1,occurs(1,("left",1,7,6,6),2),1,2)]
 Do not receive all actions yet 
 Waiting ... 
 Got 1 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,7,6,6),2),1,2),(1,occurs(3,("up",3,6,0,1),2),3,2)]
+List of action occurrences [(1,occurs(3,("up",3,6,0,1),2),3,2),(1,occurs(1,("left",1,7,6,6),2),1,2)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("up",2,0,1,2),2) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,7,6,6),2),1,2),(1,occurs(3,("up",3,6,0,1),2),3,2),(1,occurs(2,("up",2,0,1,2),2),2,2)]
+List of action occurrences [(1,occurs(3,("up",3,6,0,1),2),3,2),(1,occurs(1,("left",1,7,6,6),2),1,2),(1,occurs(2,("up",2,0,1,2),2),2,2)]
 List of action that will be executed 
-   [occurs(1,("left",1,7,6,6),2),occurs(3,("up",3,6,0,1),2),occurs(2,("up",2,0,1,2),2)]
+   [occurs(3,("up",3,6,0,1),2),occurs(1,("left",1,7,6,6),2),occurs(2,("up",2,0,1,2),2)]
 Computing next state at step 2
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_2.lp errors.lp mapf_domain.lp next_1.lp -c t=2 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_2.lp'
@@ -101,26 +101,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(3)
 Sending agent 3 this message (Type, Content) ==> 2 next(3) 
 Complete sending this message (Type, Content) ==> 2 next(3) 
 Waiting ... 
-Got occurs(1,("down",1,6,6,5),3) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("down",1,6,6,5),3),1,3)]
-Do not receive all actions yet 
-Waiting ... 
 Got 2 of type 10 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,6,5),3),1,3)]
+List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(3,("left",3,6,1,5),3) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,6,5),3),1,3),(1,occurs(3,("left",3,6,1,5),3),3,3)]
+List of action occurrences [(1,occurs(3,("left",3,6,1,5),3),3,3)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(1,("down",1,6,6,5),3) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("left",3,6,1,5),3),3,3),(1,occurs(1,("down",1,6,6,5),3),1,3)]
 Do not receive all actions yet 
 Waiting ... 
 Got 2 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,6,5),3),1,3),(1,occurs(3,("left",3,6,1,5),3),3,3)]
+List of action occurrences [(1,occurs(3,("left",3,6,1,5),3),3,3),(1,occurs(1,("down",1,6,6,5),3),1,3)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("up",2,0,2,3),3) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,6,5),3),1,3),(1,occurs(3,("left",3,6,1,5),3),3,3),(1,occurs(2,("up",2,0,2,3),3),2,3)]
+List of action occurrences [(1,occurs(3,("left",3,6,1,5),3),3,3),(1,occurs(1,("down",1,6,6,5),3),1,3),(1,occurs(2,("up",2,0,2,3),3),2,3)]
 List of action that will be executed 
-   [occurs(1,("down",1,6,6,5),3),occurs(3,("left",3,6,1,5),3),occurs(2,("up",2,0,2,3),3)]
+   [occurs(3,("left",3,6,1,5),3),occurs(1,("down",1,6,6,5),3),occurs(2,("up",2,0,2,3),3)]
 Computing next state at step 3
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_3.lp errors.lp mapf_domain.lp next_2.lp -c t=3 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_3.lp'
@@ -150,22 +150,22 @@ Got occurs(1,("down",1,6,5,4),4) of type 1 (action occurrence) from agent 1
 List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4)]
 Do not receive all actions yet 
 Waiting ... 
-Got 3 of type 10 (action occurrence) from agent 3
+Got 3 of type 10 (action occurrence) from agent 2
 List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("stay",3,5,1),4) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(3,("stay",3,5,1),4),3,4)]
-Do not receive all actions yet 
-Waiting ... 
-Got 3 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(3,("stay",3,5,1),4),3,4)]
-Do not receive all actions yet 
-Waiting ... 
 Got occurs(2,("right",2,0,3,1),4) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(3,("stay",3,5,1),4),3,4),(1,occurs(2,("right",2,0,3,1),4),2,4)]
+List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(2,("right",2,0,3,1),4),2,4)]
+Do not receive all actions yet 
+Waiting ... 
+Got 3 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(2,("right",2,0,3,1),4),2,4)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(3,("stay",3,5,1),4) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(1,("down",1,6,5,4),4),1,4),(1,occurs(2,("right",2,0,3,1),4),2,4),(1,occurs(3,("stay",3,5,1),4),3,4)]
 List of action that will be executed 
-   [occurs(1,("down",1,6,5,4),4),occurs(3,("stay",3,5,1),4),occurs(2,("right",2,0,3,1),4)]
+   [occurs(1,("down",1,6,5,4),4),occurs(2,("right",2,0,3,1),4),occurs(3,("stay",3,5,1),4)]
 Computing next state at step 4
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_4.lp errors.lp mapf_domain.lp next_3.lp -c t=4 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_4.lp'
@@ -191,26 +191,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(5)
 Sending agent 3 this message (Type, Content) ==> 2 next(5) 
 Complete sending this message (Type, Content) ==> 2 next(5) 
 Waiting ... 
-Got 4 of type 10 (action occurrence) from agent 3
+Got 4 of type 10 (action occurrence) from agent 2
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("up",3,5,1,2),5) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(3,("up",3,5,1,2),5),3,5)]
-Do not receive all actions yet 
-Waiting ... 
-Got 4 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("up",3,5,1,2),5),3,5)]
-Do not receive all actions yet 
-Waiting ... 
 Got occurs(2,("right",2,1,3,2),5) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("up",3,5,1,2),5),3,5),(1,occurs(2,("right",2,1,3,2),5),2,5)]
+List of action occurrences [(1,occurs(2,("right",2,1,3,2),5),2,5)]
+Do not receive all actions yet 
+Waiting ... 
+Got 4 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("right",2,1,3,2),5),2,5)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(3,("up",3,5,1,2),5) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("right",2,1,3,2),5),2,5),(1,occurs(3,("up",3,5,1,2),5),3,5)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(1,("stay",1,6,4),5) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(3,("up",3,5,1,2),5),3,5),(1,occurs(2,("right",2,1,3,2),5),2,5),(1,occurs(1,("stay",1,6,4),5),1,5)]
+List of action occurrences [(1,occurs(2,("right",2,1,3,2),5),2,5),(1,occurs(3,("up",3,5,1,2),5),3,5),(1,occurs(1,("stay",1,6,4),5),1,5)]
 List of action that will be executed 
-   [occurs(3,("up",3,5,1,2),5),occurs(2,("right",2,1,3,2),5),occurs(1,("stay",1,6,4),5)]
+   [occurs(2,("right",2,1,3,2),5),occurs(3,("up",3,5,1,2),5),occurs(1,("stay",1,6,4),5)]
 Computing next state at step 5
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_5.lp errors.lp mapf_domain.lp next_4.lp -c t=5 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_5.lp'
@@ -244,18 +244,18 @@ Got occurs(2,("right",2,2,3,3),6) of type 1 (action occurrence) from agent 2
 List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("up",1,6,4,5),6) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6),(1,occurs(1,("up",1,6,4,5),6),1,6)]
-Do not receive all actions yet 
-Waiting ... 
 Got 5 of type 10 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6),(1,occurs(1,("up",1,6,4,5),6),1,6)]
+List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(3,("up",3,5,2,3),6) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6),(1,occurs(1,("up",1,6,4,5),6),1,6),(1,occurs(3,("up",3,5,2,3),6),3,6)]
+List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6),(1,occurs(3,("up",3,5,2,3),6),3,6)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(1,("up",1,6,4,5),6) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(2,("right",2,2,3,3),6),2,6),(1,occurs(3,("up",3,5,2,3),6),3,6),(1,occurs(1,("up",1,6,4,5),6),1,6)]
 List of action that will be executed 
-   [occurs(2,("right",2,2,3,3),6),occurs(1,("up",1,6,4,5),6),occurs(3,("up",3,5,2,3),6)]
+   [occurs(2,("right",2,2,3,3),6),occurs(3,("up",3,5,2,3),6),occurs(1,("up",1,6,4,5),6)]
 Computing next state at step 6
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_6.lp errors.lp mapf_domain.lp next_5.lp -c t=6 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_6.lp'
@@ -281,26 +281,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(7)
 Sending agent 3 this message (Type, Content) ==> 2 next(7) 
 Complete sending this message (Type, Content) ==> 2 next(7) 
 Waiting ... 
-Got occurs(1,("down",1,6,5,4),7) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),7),1,7)]
-Do not receive all actions yet 
-Waiting ... 
 Got 6 of type 10 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),7),1,7)]
+List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(3,("up",3,5,3,4),7) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),7),1,7),(1,occurs(3,("up",3,5,3,4),7),3,7)]
+List of action occurrences [(1,occurs(3,("up",3,5,3,4),7),3,7)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(1,("down",1,6,5,4),7) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("up",3,5,3,4),7),3,7),(1,occurs(1,("down",1,6,5,4),7),1,7)]
 Do not receive all actions yet 
 Waiting ... 
 Got 6 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),7),1,7),(1,occurs(3,("up",3,5,3,4),7),3,7)]
+List of action occurrences [(1,occurs(3,("up",3,5,3,4),7),3,7),(1,occurs(1,("down",1,6,5,4),7),1,7)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("up",2,3,3,4),7) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,5,4),7),1,7),(1,occurs(3,("up",3,5,3,4),7),3,7),(1,occurs(2,("up",2,3,3,4),7),2,7)]
+List of action occurrences [(1,occurs(3,("up",3,5,3,4),7),3,7),(1,occurs(1,("down",1,6,5,4),7),1,7),(1,occurs(2,("up",2,3,3,4),7),2,7)]
 List of action that will be executed 
-   [occurs(1,("down",1,6,5,4),7),occurs(3,("up",3,5,3,4),7),occurs(2,("up",2,3,3,4),7)]
+   [occurs(3,("up",3,5,3,4),7),occurs(1,("down",1,6,5,4),7),occurs(2,("up",2,3,3,4),7)]
 Computing next state at step 7
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_7.lp errors.lp mapf_domain.lp next_6.lp -c t=7 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_7.lp'
@@ -326,26 +326,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(8)
 Sending agent 3 this message (Type, Content) ==> 2 next(8) 
 Complete sending this message (Type, Content) ==> 2 next(8) 
 Waiting ... 
-Got occurs(1,("down",1,6,4,3),8) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("down",1,6,4,3),8),1,8)]
-Do not receive all actions yet 
-Waiting ... 
 Got 7 of type 10 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,4,3),8),1,8)]
+List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(3,("down",3,5,4,3),8) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,6,4,3),8),1,8),(1,occurs(3,("down",3,5,4,3),8),3,8)]
+List of action occurrences [(1,occurs(3,("down",3,5,4,3),8),3,8)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(1,("down",1,6,4,3),8) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("down",3,5,4,3),8),3,8),(1,occurs(1,("down",1,6,4,3),8),1,8)]
 Do not receive all actions yet 
 Waiting ... 
 Got 7 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,4,3),8),1,8),(1,occurs(3,("down",3,5,4,3),8),3,8)]
+List of action occurrences [(1,occurs(3,("down",3,5,4,3),8),3,8),(1,occurs(1,("down",1,6,4,3),8),1,8)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("right",2,3,4,4),8) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,6,4,3),8),1,8),(1,occurs(3,("down",3,5,4,3),8),3,8),(1,occurs(2,("right",2,3,4,4),8),2,8)]
+List of action occurrences [(1,occurs(3,("down",3,5,4,3),8),3,8),(1,occurs(1,("down",1,6,4,3),8),1,8),(1,occurs(2,("right",2,3,4,4),8),2,8)]
 List of action that will be executed 
-   [occurs(1,("down",1,6,4,3),8),occurs(3,("down",3,5,4,3),8),occurs(2,("right",2,3,4,4),8)]
+   [occurs(3,("down",3,5,4,3),8),occurs(1,("down",1,6,4,3),8),occurs(2,("right",2,3,4,4),8)]
 Computing next state at step 8
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_8.lp errors.lp mapf_domain.lp next_7.lp -c t=8 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_8.lp'
@@ -371,26 +371,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(9)
 Sending agent 3 this message (Type, Content) ==> 2 next(9) 
 Complete sending this message (Type, Content) ==> 2 next(9) 
 Waiting ... 
-Got 8 of type 10 (action occurrence) from agent 3
+Got 8 of type 10 (action occurrence) from agent 2
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
+Got occurs(2,("right",2,4,4,5),9) of type 1 (action occurrence) from agent 2
+List of action occurrences [(1,occurs(2,("right",2,4,4,5),9),2,9)]
+Do not receive all actions yet 
+Waiting ... 
+Got 8 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("right",2,4,4,5),9),2,9)]
+Do not receive all actions yet 
+Waiting ... 
 Got occurs(3,("stay",3,5,3),9) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(3,("stay",3,5,3),9),3,9)]
+List of action occurrences [(1,occurs(2,("right",2,4,4,5),9),2,9),(1,occurs(3,("stay",3,5,3),9),3,9)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(1,("stay",1,6,3),9) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(3,("stay",3,5,3),9),3,9),(1,occurs(1,("stay",1,6,3),9),1,9)]
-Do not receive all actions yet 
-Waiting ... 
-Got 8 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("stay",3,5,3),9),3,9),(1,occurs(1,("stay",1,6,3),9),1,9)]
-Do not receive all actions yet 
-Waiting ... 
-Got occurs(2,("right",2,4,4,5),9) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("stay",3,5,3),9),3,9),(1,occurs(1,("stay",1,6,3),9),1,9),(1,occurs(2,("right",2,4,4,5),9),2,9)]
+List of action occurrences [(1,occurs(2,("right",2,4,4,5),9),2,9),(1,occurs(3,("stay",3,5,3),9),3,9),(1,occurs(1,("stay",1,6,3),9),1,9)]
 List of action that will be executed 
-   [occurs(3,("stay",3,5,3),9),occurs(1,("stay",1,6,3),9),occurs(2,("right",2,4,4,5),9)]
+   [occurs(2,("right",2,4,4,5),9),occurs(3,("stay",3,5,3),9),occurs(1,("stay",1,6,3),9)]
 Computing next state at step 9
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_9.lp errors.lp mapf_domain.lp next_8.lp -c t=9 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_9.lp'
@@ -416,26 +416,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(10)
 Sending agent 3 this message (Type, Content) ==> 2 next(10) 
 Complete sending this message (Type, Content) ==> 2 next(10) 
 Waiting ... 
-Got 9 of type 10 (action occurrence) from agent 3
+Got 9 of type 10 (action occurrence) from agent 2
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
+Got occurs(2,("up",2,5,4,5),10) of type 1 (action occurrence) from agent 2
+List of action occurrences [(1,occurs(2,("up",2,5,4,5),10),2,10)]
+Do not receive all actions yet 
+Waiting ... 
+Got 9 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("up",2,5,4,5),10),2,10)]
+Do not receive all actions yet 
+Waiting ... 
 Got occurs(3,("up",3,5,3,4),10) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(3,("up",3,5,3,4),10),3,10)]
+List of action occurrences [(1,occurs(2,("up",2,5,4,5),10),2,10),(1,occurs(3,("up",3,5,3,4),10),3,10)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(1,("up",1,6,3,4),10) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(3,("up",3,5,3,4),10),3,10),(1,occurs(1,("up",1,6,3,4),10),1,10)]
-Do not receive all actions yet 
-Waiting ... 
-Got 9 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("up",3,5,3,4),10),3,10),(1,occurs(1,("up",1,6,3,4),10),1,10)]
-Do not receive all actions yet 
-Waiting ... 
-Got occurs(2,("up",2,5,4,5),10) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(3,("up",3,5,3,4),10),3,10),(1,occurs(1,("up",1,6,3,4),10),1,10),(1,occurs(2,("up",2,5,4,5),10),2,10)]
+List of action occurrences [(1,occurs(2,("up",2,5,4,5),10),2,10),(1,occurs(3,("up",3,5,3,4),10),3,10),(1,occurs(1,("up",1,6,3,4),10),1,10)]
 List of action that will be executed 
-   [occurs(3,("up",3,5,3,4),10),occurs(1,("up",1,6,3,4),10),occurs(2,("up",2,5,4,5),10)]
+   [occurs(2,("up",2,5,4,5),10),occurs(3,("up",3,5,3,4),10),occurs(1,("up",1,6,3,4),10)]
 Computing next state at step 10
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_10.lp errors.lp mapf_domain.lp next_9.lp -c t=10 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_10.lp'
@@ -473,14 +473,14 @@ Got 10 of type 10 (action occurrence) from agent 3
 List of action occurrences [(1,occurs(2,("right",2,5,5,6),11),2,11)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("left",1,6,4,5),11) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(2,("right",2,5,5,6),11),2,11),(1,occurs(1,("left",1,6,4,5),11),1,11)]
+Got occurs(3,("left",3,5,4,4),11) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("right",2,5,5,6),11),2,11),(1,occurs(3,("left",3,5,4,4),11),3,11)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("left",3,5,4,4),11) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(2,("right",2,5,5,6),11),2,11),(1,occurs(1,("left",1,6,4,5),11),1,11),(1,occurs(3,("left",3,5,4,4),11),3,11)]
+Got occurs(1,("left",1,6,4,5),11) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(2,("right",2,5,5,6),11),2,11),(1,occurs(3,("left",3,5,4,4),11),3,11),(1,occurs(1,("left",1,6,4,5),11),1,11)]
 List of action that will be executed 
-   [occurs(2,("right",2,5,5,6),11),occurs(1,("left",1,6,4,5),11),occurs(3,("left",3,5,4,4),11)]
+   [occurs(2,("right",2,5,5,6),11),occurs(3,("left",3,5,4,4),11),occurs(1,("left",1,6,4,5),11)]
 Computing next state at step 11
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_11.lp errors.lp mapf_domain.lp next_10.lp -c t=11 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_11.lp'
@@ -510,22 +510,22 @@ Got 11 of type 10 (action occurrence) from agent 3
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("left",1,5,4,4),12) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("left",1,5,4,4),12),1,12)]
+Got occurs(3,("left",3,4,4,3),12) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(3,("left",3,4,4,3),12),3,12)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("left",3,4,4,3),12) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("left",1,5,4,4),12),1,12),(1,occurs(3,("left",3,4,4,3),12),3,12)]
+Got occurs(1,("left",1,5,4,4),12) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("left",3,4,4,3),12),3,12),(1,occurs(1,("left",1,5,4,4),12),1,12)]
 Do not receive all actions yet 
 Waiting ... 
 Got 11 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,5,4,4),12),1,12),(1,occurs(3,("left",3,4,4,3),12),3,12)]
+List of action occurrences [(1,occurs(3,("left",3,4,4,3),12),3,12),(1,occurs(1,("left",1,5,4,4),12),1,12)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("down",2,6,5,4),12) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,5,4,4),12),1,12),(1,occurs(3,("left",3,4,4,3),12),3,12),(1,occurs(2,("down",2,6,5,4),12),2,12)]
+List of action occurrences [(1,occurs(3,("left",3,4,4,3),12),3,12),(1,occurs(1,("left",1,5,4,4),12),1,12),(1,occurs(2,("down",2,6,5,4),12),2,12)]
 List of action that will be executed 
-   [occurs(1,("left",1,5,4,4),12),occurs(3,("left",3,4,4,3),12),occurs(2,("down",2,6,5,4),12)]
+   [occurs(3,("left",3,4,4,3),12),occurs(1,("left",1,5,4,4),12),occurs(2,("down",2,6,5,4),12)]
 Computing next state at step 12
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_12.lp errors.lp mapf_domain.lp next_11.lp -c t=12 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_12.lp'
@@ -555,22 +555,22 @@ Got 12 of type 10 (action occurrence) from agent 3
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("left",1,4,4,3),13) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("left",1,4,4,3),13),1,13)]
+Got occurs(3,("down",3,3,4,3),13) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(3,("down",3,3,4,3),13),3,13)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("down",3,3,4,3),13) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("left",1,4,4,3),13),1,13),(1,occurs(3,("down",3,3,4,3),13),3,13)]
+Got occurs(1,("left",1,4,4,3),13) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("down",3,3,4,3),13),3,13),(1,occurs(1,("left",1,4,4,3),13),1,13)]
 Do not receive all actions yet 
 Waiting ... 
 Got 12 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,4,4,3),13),1,13),(1,occurs(3,("down",3,3,4,3),13),3,13)]
+List of action occurrences [(1,occurs(3,("down",3,3,4,3),13),3,13),(1,occurs(1,("left",1,4,4,3),13),1,13)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("down",2,6,4,3),13) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,4,4,3),13),1,13),(1,occurs(3,("down",3,3,4,3),13),3,13),(1,occurs(2,("down",2,6,4,3),13),2,13)]
+List of action occurrences [(1,occurs(3,("down",3,3,4,3),13),3,13),(1,occurs(1,("left",1,4,4,3),13),1,13),(1,occurs(2,("down",2,6,4,3),13),2,13)]
 List of action that will be executed 
-   [occurs(1,("left",1,4,4,3),13),occurs(3,("down",3,3,4,3),13),occurs(2,("down",2,6,4,3),13)]
+   [occurs(3,("down",3,3,4,3),13),occurs(1,("left",1,4,4,3),13),occurs(2,("down",2,6,4,3),13)]
 Computing next state at step 13
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_13.lp errors.lp mapf_domain.lp next_12.lp -c t=13 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_13.lp'
@@ -596,26 +596,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(14)
 Sending agent 3 this message (Type, Content) ==> 2 next(14) 
 Complete sending this message (Type, Content) ==> 2 next(14) 
 Waiting ... 
-Got 13 of type 10 (action occurrence) from agent 3
-List of action occurrences []
-Do not receive all actions yet 
-Waiting ... 
 Got occurs(1,("left",1,3,4,2),14) of type 1 (action occurrence) from agent 1
 List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("stay",3,3,3),14) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(3,("stay",3,3,3),14),3,14)]
-Do not receive all actions yet 
-Waiting ... 
 Got 13 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(3,("stay",3,3,3),14),3,14)]
+List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("down",2,6,3,2),14) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(3,("stay",3,3,3),14),3,14),(1,occurs(2,("down",2,6,3,2),14),2,14)]
+List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(2,("down",2,6,3,2),14),2,14)]
+Do not receive all actions yet 
+Waiting ... 
+Got 13 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(2,("down",2,6,3,2),14),2,14)]
+Do not receive all actions yet 
+Waiting ... 
+Got occurs(3,("stay",3,3,3),14) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(1,("left",1,3,4,2),14),1,14),(1,occurs(2,("down",2,6,3,2),14),2,14),(1,occurs(3,("stay",3,3,3),14),3,14)]
 List of action that will be executed 
-   [occurs(1,("left",1,3,4,2),14),occurs(3,("stay",3,3,3),14),occurs(2,("down",2,6,3,2),14)]
+   [occurs(1,("left",1,3,4,2),14),occurs(2,("down",2,6,3,2),14),occurs(3,("stay",3,3,3),14)]
 Computing next state at step 14
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_14.lp errors.lp mapf_domain.lp next_13.lp -c t=14 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_14.lp'
@@ -641,26 +641,26 @@ Sending agent 2 this message (Type, Content) ==> 2 next(15)
 Sending agent 3 this message (Type, Content) ==> 2 next(15) 
 Complete sending this message (Type, Content) ==> 2 next(15) 
 Waiting ... 
-Got 14 of type 10 (action occurrence) from agent 3
+Got 14 of type 10 (action occurrence) from agent 2
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("down",1,2,4,3),15) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("down",1,2,4,3),15),1,15)]
+Got occurs(2,("down",2,6,2,1),15) of type 1 (action occurrence) from agent 2
+List of action occurrences [(1,occurs(2,("down",2,6,2,1),15),2,15)]
+Do not receive all actions yet 
+Waiting ... 
+Got 14 of type 10 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("down",2,6,2,1),15),2,15)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(3,("down",3,3,3,2),15) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("down",1,2,4,3),15),1,15),(1,occurs(3,("down",3,3,3,2),15),3,15)]
+List of action occurrences [(1,occurs(2,("down",2,6,2,1),15),2,15),(1,occurs(3,("down",3,3,3,2),15),3,15)]
 Do not receive all actions yet 
 Waiting ... 
-Got 14 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,2,4,3),15),1,15),(1,occurs(3,("down",3,3,3,2),15),3,15)]
-Do not receive all actions yet 
-Waiting ... 
-Got occurs(2,("down",2,6,2,1),15) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("down",1,2,4,3),15),1,15),(1,occurs(3,("down",3,3,3,2),15),3,15),(1,occurs(2,("down",2,6,2,1),15),2,15)]
+Got occurs(1,("down",1,2,4,3),15) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(2,("down",2,6,2,1),15),2,15),(1,occurs(3,("down",3,3,3,2),15),3,15),(1,occurs(1,("down",1,2,4,3),15),1,15)]
 List of action that will be executed 
-   [occurs(1,("down",1,2,4,3),15),occurs(3,("down",3,3,3,2),15),occurs(2,("down",2,6,2,1),15)]
+   [occurs(2,("down",2,6,2,1),15),occurs(3,("down",3,3,3,2),15),occurs(1,("down",1,2,4,3),15)]
 Computing next state at step 15
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_15.lp errors.lp mapf_domain.lp next_14.lp -c t=15 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_15.lp'
@@ -698,14 +698,14 @@ Got 15 of type 10 (action occurrence) from agent 3
 List of action occurrences [(1,occurs(2,("down",2,6,1,0),16),2,16)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("left",1,2,3,1),16) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(2,("down",2,6,1,0),16),2,16),(1,occurs(1,("left",1,2,3,1),16),1,16)]
+Got occurs(3,("down",3,3,2,1),16) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(2,("down",2,6,1,0),16),2,16),(1,occurs(3,("down",3,3,2,1),16),3,16)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("down",3,3,2,1),16) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(2,("down",2,6,1,0),16),2,16),(1,occurs(1,("left",1,2,3,1),16),1,16),(1,occurs(3,("down",3,3,2,1),16),3,16)]
+Got occurs(1,("left",1,2,3,1),16) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(2,("down",2,6,1,0),16),2,16),(1,occurs(3,("down",3,3,2,1),16),3,16),(1,occurs(1,("left",1,2,3,1),16),1,16)]
 List of action that will be executed 
-   [occurs(2,("down",2,6,1,0),16),occurs(1,("left",1,2,3,1),16),occurs(3,("down",3,3,2,1),16)]
+   [occurs(2,("down",2,6,1,0),16),occurs(3,("down",3,3,2,1),16),occurs(1,("left",1,2,3,1),16)]
 Computing next state at step 16
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_16.lp errors.lp mapf_domain.lp next_15.lp -c t=16 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_16.lp'
@@ -780,22 +780,22 @@ Got 17 of type 10 (action occurrence) from agent 3
 List of action occurrences []
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(1,("stay",1,0,3),18) of type 1 (action occurrence) from agent 1
-List of action occurrences [(1,occurs(1,("stay",1,0,3),18),1,18)]
+Got occurs(3,("right",3,2,1,3),18) of type 1 (action occurrence) from agent 3
+List of action occurrences [(1,occurs(3,("right",3,2,1,3),18),3,18)]
 Do not receive all actions yet 
 Waiting ... 
-Got occurs(3,("right",3,2,1,3),18) of type 1 (action occurrence) from agent 3
-List of action occurrences [(1,occurs(1,("stay",1,0,3),18),1,18),(1,occurs(3,("right",3,2,1,3),18),3,18)]
+Got occurs(1,("stay",1,0,3),18) of type 1 (action occurrence) from agent 1
+List of action occurrences [(1,occurs(3,("right",3,2,1,3),18),3,18),(1,occurs(1,("stay",1,0,3),18),1,18)]
 Do not receive all actions yet 
 Waiting ... 
 Got 17 of type 10 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("stay",1,0,3),18),1,18),(1,occurs(3,("right",3,2,1,3),18),3,18)]
+List of action occurrences [(1,occurs(3,("right",3,2,1,3),18),3,18),(1,occurs(1,("stay",1,0,3),18),1,18)]
 Do not receive all actions yet 
 Waiting ... 
 Got occurs(2,("stay",2,7,0),18) of type 1 (action occurrence) from agent 2
-List of action occurrences [(1,occurs(1,("stay",1,0,3),18),1,18),(1,occurs(3,("right",3,2,1,3),18),3,18),(1,occurs(2,("stay",2,7,0),18),2,18)]
+List of action occurrences [(1,occurs(3,("right",3,2,1,3),18),3,18),(1,occurs(1,("stay",1,0,3),18),1,18),(1,occurs(2,("stay",2,7,0),18),2,18)]
 List of action that will be executed 
-   [occurs(1,("stay",1,0,3),18),occurs(3,("right",3,2,1,3),18),occurs(2,("stay",2,7,0),18)]
+   [occurs(3,("right",3,2,1,3),18),occurs(1,("stay",1,0,3),18),occurs(2,("stay",2,7,0),18)]
 Computing next state at step 18
 *********** 
  Executing 'clingo ../../../lps/convert_error.lp env_received_18.lp errors.lp mapf_domain.lp next_17.lp -c t=18 --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_18.lp'
@@ -865,8 +865,8 @@ Exiting from Step 2
 Exiting from Step 1
 Done exeucting and wait for closing 
 Waiting for closing ... 
-Got ack of type 3 (closing) from agent 1
-Waiting for closing ... 
 Got ack of type 3 (closing) from agent 3
+Waiting for closing ... 
+Got ack of type 3 (closing) from agent 1
 Waiting for closing ... 
 Got ack of type 3 (closing) from agent 2

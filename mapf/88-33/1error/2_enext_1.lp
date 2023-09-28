@@ -1,0 +1,1 @@
+pre_relevant(2,variable(("at",2,0,0)),1). pre_relevant(2,variable(("occupied",0,1)),1). post_relevant(2,variable(("at",2,0,0)),1). post_relevant(2,variable(("at",2,0,1)),1). post_relevant(2,variable(("occupied",0,0)),1). post_relevant(2,variable(("occupied",0,1)),1). eh(variable(("at",2,0,1)),2). eh(variable(("occupied",0,1)),2).
