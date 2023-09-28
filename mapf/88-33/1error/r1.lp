@@ -2,7 +2,9 @@ agent(1, 1).
 neighbor(2, 2).
 neighbor(3, 3). 
 
-domain("mapf_domain.lp").
+%domain("mapf_domain.lp").
+
+domain("../../mapf_domain.lp").
 problem("prob1_1.lp").
 
 occurs(1,("down",1,7,7,6),1).
