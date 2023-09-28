@@ -42,7 +42,7 @@ postcondition(action(("down", A, X1, X2, X3)), effect(unconditional), variable((
 % actions
 2{action(A, action(("left", A, X1, X2, X3))); action(action(("left", A, X1, X2, X3)))} :- agent(A), loc(X1, X2), left((X1,X2), (X3, X2)).   
 precondition(action(("left", A, X1, X2, X3)), variable(("at", A, X1, X2)), value(variable(("at", A, X1, X2)), true)) :- action(A, action(("left", A, X1, X2, X3))).
-precondition(action(("left", A, X1, X2, X3)), variable(("occupied", X1, X3)), value(variable(("occupied", X3, X2)), false)) :- action(A, action(("left", A, X1, X2, X3))).
+precondition(action(("left", A, X1, X2, X3)), variable(("occupied", X3, X2)), value(variable(("occupied", X3, X2)), false)) :- action(A, action(("left", A, X1, X2, X3))).
 
 postcondition(action(("left", A, X1, X2, X3)), effect(unconditional), variable(("at", A, X1, X2)), value(variable(("at", A, X1, X2)), false)) :- action(A, action(("left", A, X1, X2, X3))).
 postcondition(action(("left", A, X1, X2, X3)), effect(unconditional), variable(("at", A, X3, X2)), value(variable(("at", A, X3, X2)), true)) :- action(A, action(("left", A, X1, X2, X3))).
