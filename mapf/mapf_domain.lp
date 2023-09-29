@@ -64,9 +64,7 @@ postcondition(action(("right", A, X1, X2, X3)), effect(unconditional), variable(
 2{action(A, action(("stay", A, X1, X2))); action(action(("stay", A, X1, X2)))} :- agent(A), loc(X1, X2).  
 precondition(action(("stay", A, X1, X2)), variable(("at", A, X1, X2)), value(variable(("at", A, X1, X2)), true)) :- action(A, action(("stay", A, X1, X2))).
 postcondition(action(("stay", A, X1, X2)), effect(unconditional), variable(("occupied", X1, X2)), value(variable(("occupied", X1, X2)), true)) :- action(A, action(("stay", A, X1, X2))).
-
-
-%%postcondition(action(("stay", A, X1, X2)), effect(unconditional), variable(("at", A, X1, X2)), value(variable(("at", A, X1, X2)), true)) :- action(A, action(("stay", A, X1, X2))).
+postcondition(action(("stay", A, X1, X2)), effect(unconditional), variable(("at", A, X1, X2)), value(variable(("at", A, X1, X2)), true)) :- action(A, action(("stay", A, X1, X2))).
 
 %%%%%%%%%% 
                           
