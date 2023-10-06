@@ -21,4 +21,5 @@ executable(AG, A, t):-  action(AG, action(A)),
 
 #show. 
 #show h(F, t+1) : h(F, t+1).
-%#show executable/3. 
+#show executable/3. 
+#show ab/1. 
