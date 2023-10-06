@@ -19,7 +19,10 @@ executable(AG, A, t):-  action(AG, action(A)),
 %
 %:- action(AG, action(A)), action(AG1, action(A1)), A!=A1, occurs(AG, A, t), occurs(AG1, A1,t), interference(A, A1), not ab(A). not ab(A1). 
 
+ab(AG') :- occurs(AG, A, t), occurs(AG', B, t), cascading(A, B), ab(AG). 
+
 #show. 
 #show h(F, t+1) : h(F, t+1).
 #show executable/3. 
 #show ab/1. 
+%#show cascading/2. 

@@ -82,5 +82,19 @@ interference(A, B) :- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2,
 
 %%%%%%%%%% 
 
+cascading(A, B):- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2, 
+                         postcondition(action(B), effect(unconditional), variable(("at", Ag2, X1, X2)), value(variable(("at", Ag2, X1, X2)), true)),
+                         precondition(action(A), variable(("at", Ag1, X1, X2)), value(variable(("at", Ag1, X1, X2)), true)). 
+
+%
+%
+%cascading(A, B):- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2, 
+%                         postcondition(action(A), effect(unconditional), variable(("at", Ag1, X1, X2)), value(variable(("at", Ag1, X1, X2)), true)),
+%                         precondition(action(B), variable(("at", Ag2, X1, X2)), value(variable(("at", Ag2, X1, X2)), true)). 
+%
+%cascading(A, B):- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2, 
+%                         postcondition(action(A), effect(unconditional), variable(("at", Ag1, X1, X2)), value(variable(("at", Ag1, X1, X2)), false)),
+%                         precondition(action(B), variable(("at", Ag2, X1, X2)), value(variable(("at", Ag2, X1, X2)), false)). 
+
 
 
