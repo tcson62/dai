@@ -5,7 +5,7 @@ block(X,Y) :- loc(X,Y), X = 5, Y!= 5.
 % initial state
 %initialState(variable(("at", 1, 7, 6)), value(variable(("at", 1, 7, 6)), true)).
 initialState(variable(("at", 2, 3, 2)), value(variable(("at", 2, 3, 2)), true)).
-initialState(variable(("occupied", 3, 2)), value(variable(("occupied",  3, 2)), true)).
+% initialState(variable(("occupied", 3, 2)), value(variable(("occupied",  3, 2)), true)).
 
 %initialState(variable(("at", 3, 7, 5)), value(variable(("at", 3, 7, 5)), true)).
 %initialState(variable(("at", 4, 0, 5)), value(variable(("at", 4, 0, 5)), true)).

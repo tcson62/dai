@@ -9,11 +9,11 @@ initialState(variable(("at", 3, 7, 5)), value(variable(("at", 3, 7, 5)), true)).
 initialState(variable(("at", 4, 0, 5)), value(variable(("at", 4, 0, 5)), true)).
 initialState(variable(("at", 5, 2, 4)), value(variable(("at", 5, 2, 4)), true)).
 
-initialState(variable(("occupied", 7, 6)), value(variable(("occupied", 7, 6)), true)).
-initialState(variable(("occupied", 3, 2)), value(variable(("occupied",  3, 2)), true)).
-initialState(variable(("occupied", 7, 5)), value(variable(("occupied", 7, 5)), true)).
-initialState(variable(("occupied", 0, 5)), value(variable(("occupied", 0, 5)), true)).
-initialState(variable(("occupied", 2, 4)), value(variable(("occupied", 2, 4)), true)).
+% initialState(variable(("occupied", 7, 6)), value(variable(("occupied", 7, 6)), true)).
+% initialState(variable(("occupied", 3, 2)), value(variable(("occupied",  3, 2)), true)).
+% initialState(variable(("occupied", 7, 5)), value(variable(("occupied", 7, 5)), true)).
+% initialState(variable(("occupied", 0, 5)), value(variable(("occupied", 0, 5)), true)).
+% initialState(variable(("occupied", 2, 4)), value(variable(("occupied", 2, 4)), true)).
 
 
 

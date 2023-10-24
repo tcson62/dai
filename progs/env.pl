@@ -189,13 +189,21 @@ env_solve(CurrentStep, Domain, Problem, LOccurrences):-
      atom_concat(Ftmp, '.lp', File), 
      dump_to_file(LOccurrences, File), 
      Previous is CurrentStep - 1, 
-     toCmd(['clingo ../../../lps/convert_error.lp env_received_', CurrentStep, '.lp errors.lp ', Domain, ' next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_', CurrentStep, '.lp'], Cmd), 
-     myFormat('*********** ~n Executing ~q~n **************~n ', [Cmd]), 
-     shell(Cmd, _), 
-     toCmd(['clingo ', Domain, ' ', Problem, ' ../../../lps/compute_next.lp occ_', CurrentStep, '.lp next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\n\' > next_', CurrentStep, '.lp' ], Cmd1),
-     myFormat('*********** ~n Executing ~q~n **************~n ', [Cmd1]),
-     shell(Cmd1, _).
-     %% myFormat('Message from the system ~q~n',[E]).
+
+     getenv('SHELL', Shell),            
+     myFormat('clingo ../../../lps/convert_error.lp env_received_~q.lp errors.lp ~q next_~q.lp -c t=~q --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_~q.lp~n', [CurrentStep, Domain, Previous, CurrentStep, CurrentStep]), 
+
+           
+     process_create(Shell, ['-c', ['clingo ../../../lps/convert_error.lp env_received_', CurrentStep, '.lp errors.lp ', Domain, ' ' , Problem, ' next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1   > occ_', CurrentStep, '.lp']], [process(P1)]),  
+     process_wait(P1,exit(_)), 
+
+     process_create(Shell, ['-c', ['cat occ_', CurrentStep, '.lp >> cumu_actions.lp ']], [process(P0)]),
+     process_wait(P0,exit(_)),     
+          
+     myFormat('clingo  ../../../lps/compute_next.lp ~q ~q cumu_actions.lp occ_~q.lp next_~q.lp -c t=~q --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\' > next_~q.lp', [Domain, Problem, CurrentStep, Previous, CurrentStep, CurrentStep]),     
+     
+     process_create(Shell, ['-c', ['clingo ../../../lps/compute_next.lp ', Domain, ' ' , Problem, ' cumu_actions.lp occ_', CurrentStep, '.lp next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1  > next_', CurrentStep, '.lp']], [process(P2)]),
+     process_wait(P2,exit(_)).   
 
 % Convert a list of strings to a command line 
      
