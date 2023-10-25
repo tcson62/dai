@@ -1,0 +1,10 @@
+h(variable(("at",1,7,6)),1).
+h(variable(("at",2,3,2)),1).
+h(variable(("at",3,7,5)),1).
+h(variable(("at",4,0,5)),1).
+h(variable(("at",5,2,4)),1).
+h(variable(("occupied",7,6)),1).
+h(variable(("occupied",3,2)),1).
+h(variable(("occupied",7,5)),1).
+h(variable(("occupied",0,5)),1).
+h(variable(("occupied",2,4)),1).

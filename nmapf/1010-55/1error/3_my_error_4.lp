@@ -1,0 +1,1 @@
+question(self,("down",3,4,5,4),variable(("at",3,4,4)),false,4). question(self,("down",3,4,5,4),variable(("occupied",4,4)),false,4). question(self,("down",3,4,5,4),variable(("at",3,4,5)),true,4). question(self,("down",3,4,5,4),variable(("occupied",4,5)),true,4).

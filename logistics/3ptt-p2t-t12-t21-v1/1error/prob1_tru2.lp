@@ -16,8 +16,8 @@ has(constant("apt2"), type("airport")).
 constant(constant("pos2")).
 has(constant("pos2"), type("location")).
 
-%constant(constant("pos1")).
-%has(constant("pos1"), type("location")).
+constant(constant("pos1")).
+has(constant("pos1"), type("location")).
 
 constant(constant("cit2")).
 has(constant("cit2"), type("city")).

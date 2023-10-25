@@ -6,7 +6,7 @@ h(X, 1) :- initialState(X, value(X, true)).
 
 time(t). 
 
-0 {occurs(AG, A, t) : action(AG, action(A))} 1 :-  agent(AG), time(t).  
+1 {occurs(AG, A, t) : action(AG, action(A))} 1 :-  agent(AG), time(t).  
 
 h(X, t) :- action(AG, action(A)), occurs(AG, A, t-1), 
              postcondition(action(A), effect(unconditional), X, value(X, true)), not ab(A).

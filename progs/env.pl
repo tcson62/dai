@@ -55,6 +55,7 @@ env_nsa(Step, [AID | LA]):-
      atom_concat(AID, '_next_', NFile),
      atom_concat(NFile, Step, NTmp),
      atom_concat(NTmp, '.lp', NextFile),
+     myFormat('clingo ../../../lps/compute_next_agent.lp , ~q, , ~q, --outf=0 -V0 --out-atomf=%s. | head -n1  > ~q', [Fluents, StepFile, NextFile]),  
      process_create(Shell, ['-c', ['clingo ../../../lps/compute_next_agent.lp ', Fluents,' ', StepFile,' --outf=0 -V0 --out-atomf=%s. | head -n1  > ', NextFile]], [process(P1)]),
      process_wait(P1,exit(_)),     
      myFormat('Done with ~q~n', [AID]),
@@ -106,17 +107,15 @@ start_env(NAgents, Domain, Problem):-
     format('Start processing ~n', []),
     preparation(Problem), 
     findall(ID, def_agent(ID, _), LAgents), 
-    env_step(NAgents, LAgents, Domain, Problem, 1),
+    env_loop(NAgents, LAgents, Domain, Problem, 1),
     format('Done exeucting and wait for closing ~n', []),
     closing(NAgents).
-    %% , true. 
-    %% send_all_agents(LAgents, 2, done).
+    
 
-%% execution of each step 
-
-env_step(NAgents, LAgents, Domain, Problem, Step):-         
+env_loop(NAgents, LAgents, Domain, Problem, Step):-         
      format('Step ~q ~n', [Step]),
      myFormat('List of agents ~q ~n',[LAgents]), 
+     send_all_agents(LAgents, 2, next(Step)),
      repeat, 
 	format('Waiting ... ~n',[ ]),  
         in(msg(Agent, 0, Type, Content)),
@@ -134,61 +133,29 @@ env_step(NAgents, LAgents, Domain, Problem, Step):-
             (NDone == NAgents
                  ->
                  format('Done ...~n', [ ]),
-                 send_all_agents(LAgents, 2, done);
-
+                 send_all_agents(LAgents, 2, done)
+                 ;
                  findall(Occs, from_agent(1, Occs, _, Step), LOccurrences),  
                  myFormat('List of action that will be executed ~n   ~q~n', [LOccurrences]),
-                 % dump the data to a file named env_received_$Step.lp
-                 atom_concat(env_received_, Step, Ftmp),
-                 atom_concat(Ftmp, '.lp', File), 
-                 dump_to_file(LOccurrences, File), 
-                 myFormat('Computing next state at step ~q~n', [Step]),                 
-                 env_solve(Step, Domain, Problem),                
+                 env_solve(Step, Domain, Problem, LOccurrences),                
                  myFormat('Done computing the next state ~n',[ ]),   
 
                  % send the output to the agents 
-                 env_nsa(Step, LAgents),                  
-
-                 send_all_agents(LAgents, 2, next),
+                 env_nsa(Step, LAgents),           
                  
-                 do_wait_for_completion(Step, NAgents), 
-                 
-                 send_all_agents(LAgents, 10, Step),
-                 
+                 send_all_agents(LAgents, 10, next(Step)),
+                        
                  retractall(from_agent(_, _, _, _)), 
                  
                  Next is Step + 1,
-                 env_step(NAgents, LAgents, Domain, Problem, Next)             
+                 env_loop(NAgents, LAgents, Domain, Problem, Next)             
             )
             ;
-            
-            myFormat('Do not receive all actions yet ~n',[ ]),
-            
-            findall(Ag2, from_agent(5, wait, Ag2, Step), LADiagnosis),
-            (
-            length(LADiagnosis, 0) 
-             ->
-              true;
-              myFormat('Agents ~q needs diagnosis ... ~n',[LADiagnosis])
-            ) 
+            myFormat('Do not receive all actions yet ~n',[ ])           
         ),
         NReceived == NAgents, 
      !, 
      myFormat('Exiting from Step ~q~n',[Step]).
-
-
-do_wait_for_completion(Step, NAgents):- 
-     myFormat('Waiting for agents to complete Step ~q~n',[Step]), 
-     repeat, 
-     in(msg(Agent, 0, 10, Step)),
-     myFormat('Got completion notice from agent ~q at step ~q~n', [Agent, Step]),
-     assertz(completed(Agent, 0, 10, Step)),
-     findall((Ag, 0, 10, Step), completed(Ag, 0, 10, Step), LData),
-     myFormat('List of agents who have completed ~q~n', [LData]),
-     length(LData, NReceived),
-     NReceived == NAgents, 
-     !,
-     myFormat('All agents complete Step ~q~n',[Step]).
 
 send_all_agents([], Type, Content):-
      myFormat('Complete sending this message (Type, Content) ==> ~q ~q ~n',[Type, Content]).
@@ -215,15 +182,28 @@ closing(NAgents):-
 %% assumed that the actions sent by the agents are collected in the file env_received_$current_step.lp
 %% 
 
-env_solve(CurrentStep, Domain, Problem):-
+env_solve(CurrentStep, Domain, Problem, LOccurrences):-
+     % dump the data to a file named env_received_$Step.lp
+     myFormat('Computing next state at step ~q~n', [CurrentStep]),                 
+     atom_concat(env_received_, CurrentStep, Ftmp),
+     atom_concat(Ftmp, '.lp', File), 
+     dump_to_file(LOccurrences, File), 
      Previous is CurrentStep - 1, 
-     toCmd(['clingo ../../../lps/convert_error.lp env_received_', CurrentStep, '.lp errors.lp ', Domain, ' next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_', CurrentStep, '.lp'], Cmd), 
-     myFormat('*********** ~n Executing ~q~n **************~n ', [Cmd]), 
-     shell(Cmd, _), 
-     toCmd(['clingo ', Domain, ' ', Problem, ' ../../../lps/compute_next.lp occ_', CurrentStep, '.lp next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\n\' > next_', CurrentStep, '.lp' ], Cmd1),
-     myFormat('*********** ~n Executing ~q~n **************~n ', [Cmd1]),
-     shell(Cmd1, _).
-     %% myFormat('Message from the system ~q~n',[E]).
+
+     getenv('SHELL', Shell),            
+     myFormat('clingo ../../../lps/convert_error.lp env_received_~q.lp errors.lp ~q next_~q.lp -c t=~q --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\'  > occ_~q.lp~n', [CurrentStep, Domain, Previous, CurrentStep, CurrentStep]), 
+
+           
+     process_create(Shell, ['-c', ['clingo ../../../lps/convert_error.lp env_received_', CurrentStep, '.lp errors.lp ', Domain, ' ' , Problem, ' next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1   > occ_', CurrentStep, '.lp']], [process(P1)]),  
+     process_wait(P1,exit(_)), 
+
+     process_create(Shell, ['-c', ['cat occ_', CurrentStep, '.lp >> cumu_actions.lp ']], [process(P0)]),
+     process_wait(P0,exit(_)),     
+          
+     myFormat('clingo  ../../../lps/compute_next.lp ~q ~q cumu_actions.lp occ_~q.lp next_~q.lp -c t=~q --outf=0 -V0 --out-atomf=%s. | head -n1 | tr \' \' \'\\n\' > next_~q.lp', [Domain, Problem, CurrentStep, Previous, CurrentStep, CurrentStep]),     
+     
+     process_create(Shell, ['-c', ['clingo ../../../lps/compute_next.lp ', Domain, ' ' , Problem, ' cumu_actions.lp occ_', CurrentStep, '.lp next_', Previous, '.lp -c t=', CurrentStep, ' --outf=0 -V0 --out-atomf=%s. | head -n1  > next_', CurrentStep, '.lp']], [process(P2)]),
+     process_wait(P2,exit(_)).   
 
 % Convert a list of strings to a command line 
      

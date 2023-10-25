@@ -34,5 +34,5 @@ post_relevant(AG, X, t) :- action(action(A)), occurs(AG, A, t), postcondition(ac
 
 #show. 
 #show eh(F, t+1) : h(F, t+1).
-#show pre_relevant/3.   
-#show post_relevant/3.   
+% #show pre_relevant/3.   
+% #show post_relevant/3.   

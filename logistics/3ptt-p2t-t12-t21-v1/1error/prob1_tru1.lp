@@ -13,8 +13,8 @@ has(constant("apt1"), type("airport")).
 constant(constant("apt2")).
 has(constant("apt2"), type("airport")).
 
-%constant(constant("pos2")).
-%has(constant("pos2"), type("location")).
+constant(constant("pos2")).
+has(constant("pos2"), type("location")).
 
 constant(constant("pos1")).
 has(constant("pos1"), type("location")).
