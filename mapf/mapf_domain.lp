@@ -78,6 +78,10 @@ interference(A, B) :- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2,
                          precondition(action(B), variable(("at", Ag2, X3, X4)), value(variable(("at", Ag2, X3, X4)), true)),
                          postcondition(action(A), effect(unconditional), variable(("at", Ag1, X3, X4)), value(variable(("at", Ag1, X3, X4)), true)).
 
+conflict(A, B):- action(Ag1, action(A)), action(Ag2, action(B)), Ag1!=Ag2, 
+                         postcondition(action(B), effect(unconditional), variable(("at", Ag2, X1, X2)), value(variable(("at", Ag2, X1, X2)), true)),
+                         precondition(action(A), variable(("at", Ag1, X1, X2)), value(variable(("at", Ag1, X1, X2)), true)). 
+
 %% #show interference/2. 
 
 %%%%%%%%%% 
