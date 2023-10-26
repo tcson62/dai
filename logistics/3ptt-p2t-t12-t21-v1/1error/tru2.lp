@@ -1,7 +1,7 @@
 agent(3, constant("tru2")).
 neighbor(1, constant("apn1")). 
 
-domain("../domain.lp").
+domain("../../domain.lp").
 problem("prob1_tru2.lp").
 
 occurs(constant("tru2"),("load-truck",constant("obj23"),constant("tru2"),constant("pos2")),1).

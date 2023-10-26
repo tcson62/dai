@@ -2,7 +2,7 @@ agent(1, constant("apn1")).
 neighbor(2, constant("tru1")).
 neighbor(3, constant("tru2")). 
 
-domain("../domain.lp").
+domain("../../domain.lp").
 problem("prob1_apn1.lp").
 
 
