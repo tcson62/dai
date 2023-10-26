@@ -449,7 +449,8 @@ finding_answers(F, V, S, Me):-
 assertingAnswersSelf([]).
     
 assertingAnswersSelf([question(self,Act,Fluent,Value,Step) | LErrorsSelf]):-
-    assertz(answers(question(self, Act, Fluent, Value, Step), [self])),
+    agent(_, Name), 
+    assertz(answers(question(self, Act, Fluent, Value, Step), [(self,Name)])),
     assertingAnswersSelf(LErrorsSelf).
 
 
