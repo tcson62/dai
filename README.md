@@ -35,11 +35,11 @@ For each agent, a configuration file with the information
 
 The script 
 
-	* swipl -l ../../progs/env.pl -g "load_config('conf.pl'), halt." 			 [ > e_run.lp] 
-	* swipl -l ../../progs/agent.pl -g "load_agent_config('apn1.lp'), halt." 	 [> 1_run.lp] 
-	* swipl -l ../../progs/agent.pl -g "load_agent_config('tru1.lp'), halt." 	 [> 2_run.lp] 
-	* swipl -l ../../progs/agent.pl -g "load_agent_config('tru2.lp'), halt."		 [> 3_run.lp] 
-	* swipl -l ../../progs/agent.pl -g "load_agent_config('apn2.lp'), halt."	 [> 4_run.lp] 
+	* swipl -l ../../../progs/env.pl -g "load_config('conf.pl'), halt." 		 [ > e_run.lp] 
+	* swipl -l ../../../progs/agent.pl -g "load_agent_config('apn1.lp'), halt." 	 [> 1_run.lp] 
+	* swipl -l ../../../progs/agent.pl -g "load_agent_config('tru1.lp'), halt." 	 [> 2_run.lp] 
+	* swipl -l ../../../progs/agent.pl -g "load_agent_config('tru2.lp'), halt."	 [> 3_run.lp] 
+	* swipl -l ../../../progs/agent.pl -g "load_agent_config('apn2.lp'), halt."	 [> 4_run.lp] 
   	    
 runs the experiments with four agents.  The optional redirection [> ...] can be used to get the output of the computation to a file for examination. 
 
